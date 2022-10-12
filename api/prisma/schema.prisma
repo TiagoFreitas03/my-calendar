@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @db.VarChar(36)
+  name       String    @db.VarChar(255)
+  email      String    @unique @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  birth_date DateTime?
+  picture    String?   @db.VarChar(255)
+  created_at DateTime  @default(now())
+
+  labels Label[]
+  events Event[]
+
+  @@map("users")
+}
+
+model Label {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(255)
+  color String @db.Char(6)
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id String @db.VarChar(36)
+
+  events EventLabel[]
+
+  @@map("labels")
+}
+
+model Event {
+  id          String    @id @db.VarChar(36)
+  name        String    @db.VarChar(255)
+  description String?   @db.Text
+  start       DateTime
+  end         DateTime?
+  notified    Boolean   @default(false)
+  created_at  DateTime  @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id String @db.VarChar(36)
+
+  labels EventLabel[]
+
+  @@map("events")
+}
+
+model EventLabel {
+  event    Event  @relation(fields: [event_id], references: [id])
+  event_id String @db.VarChar(36)
+
+  label    Label @relation(fields: [label_id], references: [id])
+  label_id Int
+
+  @@id([event_id, label_id])
+  @@map("event_label")
+}
+
+model PasswordRecoveryRequest {
+  id         String   @id @db.VarChar(36)
+  email      String   @unique @db.VarChar(255)
+  created_at DateTime @default(now())
+
+  @@map("password_recovery_requests")
+}
