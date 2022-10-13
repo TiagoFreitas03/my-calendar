@@ -1,10 +1,14 @@
 import 'dotenv/config'
-import express from 'express'
 
-const app = express()
+import { Server } from './Server'
+import { UsersController } from './controllers/UsersController'
 
-const port = process.env.PORT ?? 3333
+const port = Number(process.env.PORT) ?? 3333
 
-app.listen(port, () => {
-	console.log(`server running on port ${port}`)
-})
+const controllers = [
+	new UsersController()
+]
+
+const server = new Server(port, controllers)
+
+server.execute()
