@@ -1,3 +1,5 @@
+import path from 'path'
+import fs from 'fs'
 import { ErrorRequestHandler } from 'express'
 import { ValidationError } from 'yup'
 import { JsonWebTokenError } from 'jsonwebtoken'
@@ -8,6 +10,14 @@ import { ValidationErrors } from './ValidationErrors'
 
 /** função para tratamento de erros comuns na aplicação */
 export const errorHandler: ErrorRequestHandler = (error, req, res, _next) => {
+	// exclusão de arquivos enviados por upload, caso ocorra algum erro
+	if (req.file) {
+		const file = path.join(__dirname, '..', '..', 'uploads', req.file.filename)
+
+		if (fs.existsSync(file))
+			fs.unlinkSync(file)
+	}
+
 	// erro padrão da API
 	if (error instanceof ApiError) {
 		const { message, status } = error
