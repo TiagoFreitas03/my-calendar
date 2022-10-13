@@ -15,10 +15,18 @@ export class UsersController extends Controller {
 				method: 'post',
 				handler: this.create,
 				middlewares: [upload.single('picture')]
+			},
+			// autenticação do usuário
+			{
+				path: '/login',
+				method: 'post',
+				handler: this.login,
+				middlewares: []
 			}
 		]
 	}
 
+	/** cadastra usuário */
 	async create(req: Request, res: Response) {		
 		const { name, email, password, birth_date } = req.body
 
@@ -29,5 +37,15 @@ export class UsersController extends Controller {
 		const id = await new UsersService().create({ name, email, password, birth_date, picture })
 
 		return res.status(201).json({ message: 'Usuário cadastrado', id })
+	}
+
+	/** autentica usuário */
+	async login(req: Request, res: Response) {
+		const { email, password} = req.body
+
+		/** JWT para identificação do usuário */
+		const token = await new UsersService().authenticate(email ?? '', password ?? '')
+
+		return res.json({ message: 'Usuário autenticado', token })
 	}
 }

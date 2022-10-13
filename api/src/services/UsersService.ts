@@ -1,5 +1,7 @@
+import 'dotenv/config'
 import * as yup from 'yup'
-import { hash } from 'bcrypt'
+import { hash, compare } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
 
 import { ApiError } from '../errors/ApiError'
 import { Service } from './_Service'
@@ -54,5 +56,21 @@ export class UsersService extends Service<UsersRepository> {
 			birth_date,
 			picture: data.picture
 		})
+	}
+
+	/**
+	 * realiza a autenticação do usuário e retorna o JWT
+	 * @param email e-mail do usuário
+	 * @param password senha do usuário
+	 */
+	async authenticate(email: string, password: string) {
+		const user = await this.repository.findByEmail(email)
+
+		if (!user || !await compare(password, user.password))
+			throw new ApiError('Usuário e/ou senha incorreto(s).')
+
+		const secret = process.env.JWT_SECRET ?? 'secret'
+
+		return sign({ id: user.id }, secret)
 	}
 }
