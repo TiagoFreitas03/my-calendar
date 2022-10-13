@@ -1,2 +1,8 @@
+# módulos da aplicação
 node_modules/
+
+# variáveis de ambiente
 .env
+
+# arquivos de uploads
+uploads/
