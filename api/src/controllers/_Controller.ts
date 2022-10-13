@@ -1,8 +1,5 @@
 import { Response, Request, NextFunction, Router } from 'express'
 
-/** função middleware */
-type TMiddleware = (req: Request, res: Response, next: NextFunction) => Promise<void>
-
 /** propriedades da rota */
 interface IRoute {
 	/** caminho (url) */
@@ -12,7 +9,7 @@ interface IRoute {
 	/** função que vai receber a requisição e devolver a resposta */
 	handler: (req: Request, res: Response) => Promise<Response>
 	/** middlewares da rota */
-	middlewares: TMiddleware[]
+	middlewares: any
 }
 
 /** controller base para implementação das rotas */
