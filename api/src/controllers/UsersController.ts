@@ -2,7 +2,9 @@ import { Request, Response } from 'express'
 
 import { Controller } from './_Controller'
 import { UsersService } from '../services/UsersService'
+import { UsersView } from '../views/UsersView'
 import { upload } from '../middlewares/upload'
+import { verifyJwt } from '../middlewares/auth'
 
 export class UsersController extends Controller {
 	constructor() {
@@ -22,6 +24,13 @@ export class UsersController extends Controller {
 				method: 'post',
 				handler: this.login,
 				middlewares: []
+			},
+			// busca de usuário por id
+			{
+				path: '/user',
+				method: 'get',
+				handler: this.show,
+				middlewares: [verifyJwt]
 			}
 		]
 	}
@@ -47,5 +56,15 @@ export class UsersController extends Controller {
 		const token = await new UsersService().authenticate(email ?? '', password ?? '')
 
 		return res.json({ message: 'Usuário autenticado', token })
+	}
+
+	/** busca usuário pelo id */
+	async show(req: Request, res: Response) {
+		const { user_id } = req
+
+		/** usuário */
+		const user = await new UsersService().findById(user_id)
+
+		return res.json(new UsersView().render(user))
 	}
 }

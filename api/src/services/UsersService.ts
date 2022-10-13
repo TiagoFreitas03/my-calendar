@@ -71,6 +71,14 @@ export class UsersService extends Service<UsersRepository> {
 
 		const secret = process.env.JWT_SECRET ?? 'secret'
 
+		console.log(secret)
+
 		return sign({ id: user.id }, secret)
 	}
+
+	/**
+	 * busca e retorna um usuário usando o id como filtro
+	 * @param id id do usuário
+	 */
+	findById = (id: string) => this.repository.findById(id)
 }
