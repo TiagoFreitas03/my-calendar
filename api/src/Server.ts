@@ -1,4 +1,4 @@
-import express, { Application, RequestHandler, json } from 'express'
+import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
 import 'express-async-errors'
