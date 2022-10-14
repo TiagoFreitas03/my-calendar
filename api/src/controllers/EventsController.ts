@@ -3,6 +3,8 @@ import { Request, Response } from 'express'
 import { Controller } from './_Controller'
 import { verifyJwt } from '../middlewares/auth'
 import { EventsService } from '../services/EventsService'
+import { toNumber } from '../utils/convertions'
+import { EventsView } from '../views/EventsView'
 
 /** controller de events */
 export class EventsController extends Controller {
@@ -15,7 +17,9 @@ export class EventsController extends Controller {
 			// cadastro de evento
 			{ path: '', method: 'post', handler: this.create, middlewares },
 			// atualização de evento
-			{ path: '/:id',  method: 'patch', handler: this.update, middlewares }
+			{ path: '/:id',  method: 'patch', handler: this.update, middlewares },
+			// pesquisa de evento por nome
+			{ path: '', method: 'get', handler: this.search, middlewares }
 		]
 	}
 
@@ -45,5 +49,23 @@ export class EventsController extends Controller {
 		}, id)
 
 		return res.json({ message: 'Compromisso atualizado' })
+	}
+
+	async search(req: Request, res: Response) {
+		const { name, page, limit } = req.query
+
+		const { user_id } = req
+
+		const { events, pages } = await new EventsService().findByName({
+			name: name?.toString(),
+			user_id,
+			page: toNumber(page, 1),
+			limit: toNumber(limit, 20)
+		})
+
+		return res.json({
+			events: new EventsView().renderMany(events),
+			pages
+		})
 	}
 }

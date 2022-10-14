@@ -5,21 +5,14 @@ import { EventsRepository } from "../repositories/EventsRepository"
 import { LabelsRepository } from '../repositories/LabelsRepository'
 import { isDateTime, hasDuplicates } from '../utils/validations'
 import { ApiError } from '../errors/ApiError'
+import { EventSearchFilters, EventBase, EventLabel } from '../interfaces/Event'
 
 /** dados para cadastro/atualização de evento */
-interface EventData {
-	name: string
-	description: string | null
+interface EventData extends EventBase {
 	start: string
 	end?: string
 	notify: boolean
-	user_id: string
 	labels_ids: number[]
-}
-
-/** dados da label do event */
-interface EventLabel {
-	label_id: number
 }
 
 /** service de eventos */
@@ -91,8 +84,11 @@ export class EventsService extends Service<EventsRepository> {
 		if (event.user_id !== requestData.user_id)
 			throw new ApiError('Você não pode editar este evento.', 401)
 
-		const { labels,...data } = await this.validate(requestData)
+		const data = await this.validate(requestData)
 
 		await this.repository.update(id, data)
 	}
+
+	/** pesquisa eventos filtrando pelo nome */
+	findByName = (filters: EventSearchFilters) => this.repository.searchByName(filters)
 }

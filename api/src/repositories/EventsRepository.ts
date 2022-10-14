@@ -2,25 +2,18 @@ import { v4 as uuid } from 'uuid'
 
 import { database } from '../database'
 import { EntityNotFoundError } from '../errors/EntityNotFoundError'
+import { EventSearchFilters, EventBase, EventLabel } from '../interfaces/Event'
 
 /** dados do evento */
-interface EventData {
-	name: string
-	description: string | null
+interface EventData extends EventBase {
 	start: Date
 	end: Date | null
 	notified: boolean
-	user_id: string
+	labels: EventLabel[]
 }
 
 /** dados para cadastro de evento */
 interface EventCreate extends EventData {
-	labels: EventLabel[]
-}
-
-/** Dados para adicionar label ao event */
-interface EventLabel {
-	label_id: number
 }
 
 /** Repositório de eventos */
@@ -63,10 +56,59 @@ export class EventsRepository {
 	 * @param id id do evento
 	 * @param data dados para serem atualizados
 	 */
-	async update(id: string, data: EventData) {
-		await database.event.update({
+	async update(id: string, { labels, ...data }: EventData) {
+		const event = await database.event.update({
 			where: { id },
-			data
+			data,
+			include: { labels: true }
 		})
+
+		let labelsIds = labels.map(label => label.label_id)
+
+		/** labels to remove */
+		const remove = event.labels.map(label => {
+			return labelsIds.includes(label.label_id) ? 0 : label.label_id
+		}).filter(label => label !== 0)
+
+		labelsIds = event.labels.map(label => label.label_id)
+
+		/** labels to add */
+		const add = labels.map(label => {
+			return labelsIds.includes(label.label_id) ? 0 : label.label_id
+		}).filter(label => label !== 0)
+
+		for (let label of remove) {
+			await database.eventLabel.delete({
+				where: {
+					event_id_label_id: { event_id: id, label_id: label }
+				}
+			})
+		}
+
+		for (let label of add) {
+			await database.eventLabel.create({
+				data: { event_id: id, label_id: label }
+			})
+		}
+	}
+
+	/** busca e retorna lista de eventos filtrados pelo nome */
+	async searchByName({ name, user_id, limit, page }: EventSearchFilters) {
+		const filters = name ?
+			{ name: { contains: name }, user_id } :
+			{ start: { gt: new Date() }, user_id }
+
+		const events = await database.event.findMany({
+			where: filters,
+			orderBy: [{ start: 'asc' }, { name: 'asc' }],
+			take: limit,
+			skip: (limit * page) - limit
+		})
+
+		const count = await database.event.count({
+			where: filters
+		})
+
+		return { events, pages: Math.ceil(count / limit) }
 	}
 }
