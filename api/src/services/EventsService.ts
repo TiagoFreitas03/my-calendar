@@ -79,4 +79,20 @@ export class EventsService extends Service<EventsRepository> {
 
 		return this.repository.create(data)
 	}
+
+	/**
+	 * edição dos dados do evento
+	 * @param requestData dados de atualização do evento
+	 * @param id id do evento que será atualizado
+	 */
+	async edit(requestData: EventData, id: string) {
+		const event = await this.repository.findById(id)
+
+		if (event.user_id !== requestData.user_id)
+			throw new ApiError('Você não pode editar este evento.', 401)
+
+		const { labels,...data } = await this.validate(requestData)
+
+		await this.repository.update(id, data)
+	}
 }
