@@ -30,4 +30,11 @@ export class LabelsService extends Service<LabelsRepository> {
 
 		return this.repository.create(data)
 	}
+
+	/**
+	 * busca e retorna lista de labels filtradas pelo nome
+	 * @param name nome da label
+	 * @param user_id id do usuário criador da label
+	 */
+	search = (name: string, user_id: string) => this.repository.searchByName(name, user_id)
 }
