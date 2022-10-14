@@ -3,13 +3,7 @@ import * as yup from 'yup'
 import { Service } from './_Service'
 import { LabelsRepository } from '../repositories/LabelsRepository'
 import { ApiError } from '../errors/ApiError'
-
-/** Dados para cadastro de label */
-interface LabelData {
-	name: string
-	color: string
-	user_id: string
-}
+import { LabelData } from '../interfaces/Label'
 
 /** service de labels */
 export class LabelsService extends Service<LabelsRepository> {

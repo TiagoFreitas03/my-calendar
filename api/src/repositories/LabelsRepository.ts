@@ -1,12 +1,6 @@
 import { database } from '../database'
 import { EntityNotFoundError } from '../errors/EntityNotFoundError'
-
-/** Dados para cadastro de label */
-interface LabelData {
-	name: string
-	color: string
-	user_id: string
-}
+import { LabelData } from '../interfaces/Label'
 
 /** Repositório de labels */
 export class LabelsRepository {
