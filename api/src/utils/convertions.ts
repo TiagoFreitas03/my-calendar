@@ -45,4 +45,16 @@ function dateToString(date: Date, format: TDateFormats = 'string') {
 	return `${day} ${MONTHS[month]} ${year}`
 }
 
-export { stringToDate, dateToString }
+/**
+ * converte variável em número e o retorna se for válido, ou retorna um valor padrão
+ * @param variable variável que será convertida em número
+ * @param defaultValue valor padrão para ser retornado
+ */
+function toNumber(variable: any, defaultValue: number) {
+	if (isNaN(variable))
+		return defaultValue
+
+	return Number(variable)
+}
+
+export { stringToDate, dateToString, toNumber }
