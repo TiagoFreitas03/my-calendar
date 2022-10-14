@@ -2,6 +2,7 @@ import * as yup from 'yup'
 
 import { Service } from './_Service'
 import { LabelsRepository } from '../repositories/LabelsRepository'
+import { ApiError } from '../errors/ApiError'
 
 /** Dados para cadastro de label */
 interface LabelData {
@@ -37,4 +38,18 @@ export class LabelsService extends Service<LabelsRepository> {
 	 * @param user_id id do usuário criador da label
 	 */
 	search = (name: string, user_id: string) => this.repository.searchByName(name, user_id)
+
+	/**
+	 * exclui label do banco de dados
+	 * @param id id da label a ser excluída
+	 * @param user_id id do usuário criador da label
+	 */
+	async delete(id: number, user_id: string) {
+		const label = await this.repository.findById(id)
+
+		if (label.user_id != user_id)
+			throw new ApiError('Você não pode excluir esta etiqueta', 403)
+
+		await this.repository.delete(id)
+	}
 }

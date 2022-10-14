@@ -1,4 +1,5 @@
 import { database } from '../database'
+import { EntityNotFoundError } from '../errors/EntityNotFoundError'
 
 /** Dados para cadastro de label */
 interface LabelData {
@@ -34,6 +35,31 @@ export class LabelsRepository {
 			orderBy: [
 				{ name: 'asc' }
 			]
+		})
+	}
+
+	/**
+	 * busca e retorna uma label filtrando pelo id
+	 * @param id id da label
+	 */
+	async findById(id: number) {
+		const label = await database.label.findFirst({
+			where: { id }
+		})
+
+		if (!label)
+			throw new EntityNotFoundError('etiqueta', { id })
+
+		return label
+	}
+
+	/**
+	 * exclui label do banco de dados
+	 * @param id id da label
+	 */
+	async delete(id: number) {
+		await database.label.delete({
+			where: { id }
 		})
 	}
 }

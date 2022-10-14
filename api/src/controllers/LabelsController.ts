@@ -4,6 +4,7 @@ import { Controller } from './_Controller'
 import { LabelsService } from '../services/LabelsService'
 import { LabelsView } from '../views/LabelsView'
 import { verifyJwt } from '../middlewares/auth'
+import { toNumber } from '../utils/convertions'
 
 /** controller de labels */
 export class LabelsController extends Controller {
@@ -14,7 +15,9 @@ export class LabelsController extends Controller {
 			// cadastro de label
 			{ path: '', method: 'post', handler: this.create, middlewares: [verifyJwt] },
 			// pesquisa de labels
-			{ path: '', method: 'get', handler: this.search, middlewares: [verifyJwt] }
+			{ path: '', method: 'get', handler: this.search, middlewares: [verifyJwt] },
+			// exclusão de label
+			{ path: '/:id', method: 'delete', handler: this.delete, middlewares: [verifyJwt] }
 		]
 	}
 
@@ -41,5 +44,16 @@ export class LabelsController extends Controller {
 		const labels = await new LabelsService().search(name?.toString() ?? '', user_id)
 
 		return res.json(new LabelsView().renderMany(labels))
+	}
+
+	/** exclusão de label */
+	async delete(req: Request, res: Response) {
+		const { id } = req.params
+
+		const { user_id } = req
+
+		await new LabelsService().delete(toNumber(id, 0), user_id)
+
+		return res.json({ message: 'Etiqueta excluída' })
 	}
 }
