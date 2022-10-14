@@ -46,6 +46,28 @@ function dateToString(date: Date, format: TDateFormats = 'string') {
 }
 
 /**
+ * converte data e hora para string
+ * @param datetime data e hora para serem convertidas
+ */
+function datetimeToString(datetime: Date) {
+	const dateStr = dateToString(datetime)
+
+	const [hours, minutes] = [datetime.getHours(), datetime.getMinutes()]
+
+	return `${dateStr} às ${zeroFill(hours)}:${zeroFill(minutes)}`
+}
+
+/**
+ * converte hora para string no formato HH:MM
+ * @param time horário (data) para ser convertido
+ */
+ function timeToString(time: Date) {
+	const [hours, minutes] = [time.getHours(), time.getMinutes()]
+
+	return `${zeroFill(hours)}:${zeroFill(minutes)}`
+}
+
+/**
  * converte variável em número e o retorna se for válido, ou retorna um valor padrão
  * @param variable variável que será convertida em número
  * @param defaultValue valor padrão para ser retornado
@@ -57,4 +79,10 @@ function toNumber(variable: any, defaultValue: number) {
 	return Number(variable)
 }
 
-export { stringToDate, dateToString, toNumber }
+export {
+	stringToDate,
+	dateToString,
+	toNumber,
+	datetimeToString,
+	timeToString
+}
