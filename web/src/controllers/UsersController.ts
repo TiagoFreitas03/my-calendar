@@ -14,8 +14,17 @@ interface UserCreateData {
 	picture?: File
 }
 
+/** propriedades da resposta da API para autenticação do usuário */
+interface AuthenticateResponse {
+	/** mensagem de autenticação */
+	message: string
+	/** token para autenticação do usuário */
+	token: string
+}
+
 /** controller de usuários */
 export class UsersController {
+	/** envia os dados cadastrais do usuário para a API */
 	async create({ name, email, password, birth_date, picture }: UserCreateData) {
 		/** dados para enviar à API */
 		const data = new FormData()
@@ -33,5 +42,16 @@ export class UsersController {
 		const res = await api.post('user', data)
 
 		return res.data
+	}
+
+	/**
+	 * envia os dados do usuário para autenticação na API
+	 * @param email e-mail do usuário
+	 * @param password senha do usuário
+	 */
+	async login(email: string, password: string) {
+		const res = await api.post('login', { email, password })
+
+		return res.data as AuthenticateResponse
 	}
 }
