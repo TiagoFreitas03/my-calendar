@@ -10,6 +10,7 @@ import { Register } from '../pages/user/Register'
 import { Login } from '../pages/user/Login'
 import { Logout } from '../pages/user/Logout'
 import { ChangePassword } from '../pages/user/ChangePassword'
+import { ForgotPassword } from '../pages/user/ForgotPassword'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
@@ -27,6 +28,7 @@ export function Router() {
 						<Route element={<PublicRoutes signed={signed} />}>
 							<Route path='/register' element={<Register />} />
 							<Route path='/login' element={<Login />} />
+							<Route path='/forgot_password' element={<ForgotPassword />} />
 						</Route>
 
 						<Route element={<PrivateRoutes signed={signed} />}>
