@@ -12,6 +12,7 @@ import { Logout } from '../pages/user/Logout'
 import { ChangePassword } from '../pages/user/ChangePassword'
 import { ForgotPassword } from '../pages/user/ForgotPassword'
 import { ResetPassword } from '../pages/user/ResetPassword'
+import { Event } from '../pages/events/Event'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
@@ -36,6 +37,7 @@ export function Router() {
 						<Route element={<PrivateRoutes signed={signed} />}>
 							<Route path='/logout' element={<Logout />} />
 							<Route path='/change_password' element={<ChangePassword />} />
+							<Route path='/create_event' element={<Event />} />
 						</Route>
 					</Routes>
 				</main>
