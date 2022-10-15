@@ -1,12 +1,46 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, LinkProps } from 'react-router-dom'
 
+import { useAuth } from '../contexts/AuthContext'
+import { UsersController } from '../controllers/UsersController'
+import { User } from '../interfaces/User'
 import '../styles/sidebar.tailwind.css'
 
+/** propriedades da sidebar */
 interface SidebarProps {
+	/** evento de fechamento da sidebar */
 	onClose: () => void
 }
 
+/** propriedades do link do menu */
+interface MenuLinkProps extends LinkProps {
+	/** texto do link */
+	text: string
+
+	/** ícone no link */
+	icon: string
+}
+
 export function Sidebar({ onClose: close }: SidebarProps) {
+	const { signed } = useAuth()
+
+	const [user, setUser] = useState<User>()
+
+	useEffect(() => {
+		if (signed)
+			new UsersController().show().then(data => setUser(data))
+		else
+			setUser(undefined)
+	}, [signed])
+
+	function MenuLink({ icon, text, ...rest }: MenuLinkProps) {
+		return (
+			<Link {...rest} className='border hover:bg-blue-500 p-2 text-base' onClick={close}>
+				<i className={`mr-1 fa-solid fa-${icon}`} /> {text}
+			</Link>
+		)
+	}
+
 	return (
 		<aside
 			className={
@@ -18,18 +52,38 @@ export function Sidebar({ onClose: close }: SidebarProps) {
 			<header className='flex flex-col justify-center text-center'>
 				<i className='fas fa-times fa-2x absolute top-8 right-8 cursor-pointer' onClick={close} />
 
-				<h3 className='leading-7 text-2xl'>Bem-vindx ao<br />MyCalendar</h3>
+				{ user ?
+					<>
+						<img
+							src={user.picture ?? ''}
+							alt={user.name}
+							className='p-1 bg-white border rounded-[50%] w-20 h-20 mx-auto mb-4'
+						/>
+
+						<strong>{user.name}</strong>
+					</> :
+					<h3 className='leading-7 text-2xl'>Bem-vindx ao<br />MyCalendar</h3>
+				}
 			</header>
 
-			<div>
-				<Link to='/login' className='bg-blue-500 hover:bg-blue-600' onClick={close}>
-					Entrar
-				</Link>
+			{ user ?
+				<div>
+					<MenuLink icon='home' text='Página Inicial' to='/' />
+					<MenuLink icon='calendar-plus' text='Cadastrar Evento' to='/create_event' />
+					<MenuLink icon='calendar-days' text='Próximos Eventos' to='/next_events' />
+					<MenuLink icon='key' text='Alterar Senha' to='/change_password' />
+					<MenuLink icon='arrow-right-from-bracket' text='Sair' to='/logout' />
+				</div> :
+				<div>
+					<Link to='/login' className='bg-blue-500 hover:bg-blue-600' onClick={close}>
+						Entrar
+					</Link>
 
-				<Link to='/register' className='bg-purple-500 hover:bg-purple-600' onClick={close}>
-					Cadastre-se
-				</Link>
-			</div>
+					<Link to='/register' className='bg-purple-500 hover:bg-purple-600' onClick={close}>
+						Cadastre-se
+					</Link>
+				</div>
+			}
 
 			<footer className='mb-3'>
 				<p>&copy; 2022 MyCalendar</p>
