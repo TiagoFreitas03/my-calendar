@@ -21,6 +21,14 @@ interface CreateEventResponse {
 	event: string
 }
 
+/** propriedades da resposta da pesquisa de evento por nome */
+interface SearchEventResponse {
+	/** lista de eventos */
+	events: Event[]
+	/** número de páginas da busca */
+	pages: number
+}
+
 /** controller de eventos */
 export class EventsController {
 	/**
@@ -42,6 +50,29 @@ export class EventsController {
 		const res = await api.patch(`event/${id}`, data)
 
 		return res.data.message as string
+	}
+
+	/**
+	 * busca e retorna eventos filtrados por nome
+	 * @param name nome do evento
+	 * @param page página atual da pesquisa
+	 * @param limit limite de eventos por página
+	 */
+	async searchByName(name?: string, page?: number, limit?: number) {
+		const filters: string[] = []
+
+		if (name)
+			filters.push(`name=${name}`)
+
+		if (page)
+			filters.push(`page=${page}`)
+
+		if (limit)
+			filters.push(`limit=${limit}`)
+
+		const res = await api.get(`event?${filters.join('&')}`)
+
+		return res.data as SearchEventResponse
 	}
 
 	/** busca eventos por período de referência */
