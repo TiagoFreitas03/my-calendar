@@ -6,7 +6,9 @@
 	"scripts": {
 		"dev": "ts-node-dev --ignore-watch node_modules --transpile-only src/index.ts",
 		"mcreate": "prisma migrate dev --create-only --name",
-		"migrate": "prisma migrate dev"
+		"migrate": "prisma migrate dev",
+		"build": "prisma migrate deploy && tsc",
+		"start": "node dist/index.js"
 	},
 	"dependencies": {
 		"@prisma/client": "^4.4.0",
