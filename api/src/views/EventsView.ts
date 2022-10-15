@@ -1,8 +1,17 @@
-import { Event as EventModel } from '@prisma/client'
-import { datetimeToString, dateToString, timeToString } from '../utils/convertions'
+import { Event, EventLabel, Label } from '@prisma/client'
 
 import { View } from './_View'
+import { LabelsView, LabelView } from './LabelsView'
+import { datetimeToString, dateToString, timeToString } from '../utils/convertions'
 
+/** tipagem do event recebido pelo método render da view */
+type EventModel = Event & {
+	labels?: (EventLabel & {
+		label: Label
+	})[]
+}
+
+/** campos retornados pela view */
 interface EventView {
 	id: string
 	name: string
@@ -14,11 +23,13 @@ interface EventView {
 	endDate?: string
 	endTime?: string
 	created_at: string
+	labels: LabelView[] | undefined
 }
 
+/** view de events */
 export class EventsView extends View<EventModel, EventView> {
 	render(event: EventModel) {
-		const { id, name, description, start, end, created_at } = event
+		const { id, name, description, start, end, created_at, labels } = event
 
 		return {
 			id,
@@ -30,7 +41,8 @@ export class EventsView extends View<EventModel, EventView> {
 			startTime: timeToString(start),
 			endDate: end ? dateToString(end, 'YYYY-MM-DD') : undefined,
 			endTime: end ? timeToString(end) : undefined,
-			created_at: dateToString(created_at)
+			created_at: dateToString(created_at),
+			labels: labels ? labels.map(el => new LabelsView().render(el.label)) : undefined
 		}
 	}
 }

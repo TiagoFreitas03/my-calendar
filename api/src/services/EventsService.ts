@@ -5,7 +5,9 @@ import { EventsRepository } from "../repositories/EventsRepository"
 import { LabelsRepository } from '../repositories/LabelsRepository'
 import { isDateTime, hasDuplicates } from '../utils/validations'
 import { ApiError } from '../errors/ApiError'
-import { EventSearchFilters, EventBase, EventLabel } from '../interfaces/Event'
+import {
+	EventSearchFilters, EventBase, EventLabel, EventReferenceFilters
+} from '../interfaces/Event'
 
 /** dados para cadastro/atualização de evento */
 interface EventData extends EventBase {
@@ -44,11 +46,13 @@ export class EventsService extends Service<EventsRepository> {
 		/** repositório de labels */
 		const labelsRepository = new LabelsRepository()
 
-		for (let id of labels_ids) {
-			const label = await labelsRepository.findById(id)
+		if (labels_ids && labels_ids.length > 0) {
+			for (let id of labels_ids) {
+				const label = await labelsRepository.findById(id)
 
-			if (label.user_id === data.user_id)
-				labels.push({ label_id: label.id })
+				if (label.user_id === data.user_id)
+					labels.push({ label_id: label.id })
+			}
 		}
 
 		/** data de início */
@@ -89,6 +93,50 @@ export class EventsService extends Service<EventsRepository> {
 		await this.repository.update(id, data)
 	}
 
-	/** pesquisa eventos filtrando pelo nome */
+	/**
+	 * pesquisa eventos filtrando pelo nome
+	 * @param filters filtros para a pesquisa de eventos (página, limite, nome e id do usuário)
+	 */
 	findByName = (filters: EventSearchFilters) => this.repository.searchByName(filters)
+
+	/**
+	 * busca eventos pelo período de referência
+	 * @param filters filtros para busca por referência (mês, ano e id do usuário)
+	 */
+	findByReference = (filters: EventReferenceFilters) => this.repository.searchByReference(filters)
+
+	/**
+	 * busca eventos numa data específica
+	 * @param date data dos eventos buscados
+	 * @param user_id id do usuário fazendo a busca
+	 */
+	findByDate = (date: Date, user_id: string) => this.repository.searchByDate(date, user_id)
+
+	/**
+	 * busca um evento pelo id
+	 * @param id id do evento
+	 * @param user_id id do usuário fazendo a pesquisa
+	 */
+	async findById(id: string, user_id: string) {
+		const event = await this.repository.findById(id, ['labels'])
+
+		if (event.user_id !== user_id)
+			throw new ApiError('Você não pode visualizar este evento.', 401)
+
+		return event
+	}
+
+	/**
+	 * exclui um evento do banco de dados
+	 * @param id id do evento que será excluído
+	 * @param user_id id do usuário que está excluindo o evento
+	 */
+	 async delete(id: string, user_id: string) {
+		const event = await this.repository.findById(id)
+
+		if (event.user_id !== user_id)
+			throw new ApiError('Você não pode excluir este evento.', 401)
+
+		await this.repository.delete(id)
+	}
 }

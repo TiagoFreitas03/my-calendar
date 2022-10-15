@@ -2,7 +2,9 @@ import { v4 as uuid } from 'uuid'
 
 import { database } from '../database'
 import { EntityNotFoundError } from '../errors/EntityNotFoundError'
-import { EventSearchFilters, EventBase, EventLabel } from '../interfaces/Event'
+import {
+	EventSearchFilters, EventBase, EventLabel, EventReferenceFilters
+} from '../interfaces/Event'
 
 /** dados do evento */
 interface EventData extends EventBase {
@@ -39,10 +41,16 @@ export class EventsRepository {
 	/**
 	 * busca e retorna um evento filtrando pelo id
 	 * @param id id do evento
+	 * @param relations tabelas relacionadas que devem ser incluídas na busca
 	 */
-	async findById(id: string) {
+	async findById(id: string, relations: string[] = []) {
 		const event = await database.event.findFirst({
 			where: { id },
+			include: {
+				labels: {
+					include: { label: relations.includes('labels') }
+				}
+			}
 		})
 
 		if (!event)
@@ -110,5 +118,46 @@ export class EventsRepository {
 		})
 
 		return { events, pages: Math.ceil(count / limit) }
+	}
+
+	/** busca eventos por período de referência */
+	searchByReference({ year, month, user_id }: EventReferenceFilters) {
+		const start = new Date(year, month, 1)
+		start.setHours(0, 0, 0, 0) // Início do dia
+
+		const end = new Date(year, month + 1, 0)
+		end.setHours(23, 59, 59, 999) // Fim do dia
+
+		return database.event.findMany({
+			where: {
+				start: { gte: start, lte: end },
+				user_id
+			},
+			orderBy: [{ start: 'asc' }, { name: 'asc' }]
+		})
+	}
+
+	/** busca eventos numa data específica */
+	searchByDate(date: Date, user_id: string) {
+		const start = new Date(date.setHours(0, 0, 0, 0)) // Início do dia
+		const end = new Date(date.setHours(23, 59, 59, 999)) // Fim do dia
+
+		return database.event.findMany({
+			where: {
+				start: { gte: start, lte: end },
+				user_id
+			},
+			orderBy: [{ start: 'asc' }, { name: 'asc' }]
+		})
+	}
+
+	/**
+	 * exclui um evento do banco de dados
+	 * @param id id do evento a ser excluído
+	 */
+	async delete(id: string) {
+		await database.event.delete({
+			where: { id }
+		})
 	}
 }

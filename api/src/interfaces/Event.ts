@@ -27,7 +27,20 @@ interface EventSearchFilters {
 
 /** dados da label do event */
 interface EventLabel {
+	/** id da label */
 	label_id: number
 }
 
-export { EventBase, EventSearchFilters, EventLabel }
+/** propriedades para buscar eventos por período de referência */
+interface EventReferenceFilters {
+	/** mês do período de referência */
+	month: number
+
+	/** ano do período de referência */
+	year: number
+
+	/** id do usuário buscando eventos */
+	user_id: string
+}
+
+export { EventBase, EventSearchFilters, EventLabel, EventReferenceFilters }
