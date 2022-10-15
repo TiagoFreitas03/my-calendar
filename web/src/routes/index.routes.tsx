@@ -9,11 +9,14 @@ import { Home } from '../pages/Home'
 import { Register } from '../pages/user/Register'
 import { Login } from '../pages/user/Login'
 import { Logout } from '../pages/user/Logout'
+
 import { ChangePassword } from '../pages/user/ChangePassword'
 import { ForgotPassword } from '../pages/user/ForgotPassword'
 import { ResetPassword } from '../pages/user/ResetPassword'
+
 import { Event } from '../pages/events/Event'
 import { EventDetails } from '../pages/events/EventDetails'
+import { NextEvents } from '../pages/events/NextEvents'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
@@ -41,6 +44,7 @@ export function Router() {
 							<Route path='/create_event' element={<Event />} />
 							<Route path='/edit_event/:id' element={<Event />} />
 							<Route path='/event/:id' element={<EventDetails />} />
+							<Route path='/next_events' element={<NextEvents />} />
 						</Route>
 					</Routes>
 				</main>
