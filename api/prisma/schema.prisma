@@ -53,10 +53,10 @@ model Event {
 }
 
 model EventLabel {
-  event    Event  @relation(fields: [event_id], references: [id])
+  event    Event  @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   event_id String @db.VarChar(36)
 
-  label    Label @relation(fields: [label_id], references: [id])
+  label    Label @relation(fields: [label_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   label_id Int
 
   @@id([event_id, label_id])
