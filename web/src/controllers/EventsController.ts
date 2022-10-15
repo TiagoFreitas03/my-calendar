@@ -62,4 +62,14 @@ export class EventsController {
 
 		return res.data as Event
 	}
+
+	/**
+	 * envia à API uma requisição para excluir o evento
+	 * @param id id do evento que será excluído
+	 */
+	async delete(id: string) {
+		const res = await api.delete(`event/${id}`)
+
+		return res.data.message as string
+	}
 }
