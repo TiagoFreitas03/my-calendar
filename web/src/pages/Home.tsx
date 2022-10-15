@@ -163,7 +163,7 @@ export function Home() {
 				<SpecialDates month={month} year={year} />
 			</div>
 
-			<MonthEvents />
+			<MonthEvents month={month} year={year} />
 		</div>
 	)
 }
