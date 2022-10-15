@@ -1,4 +1,5 @@
 import { resolve } from 'path'
+import { compare, hash } from 'bcrypt'
 
 import { Service } from "./_Service"
 import { PasswordsRepository } from "../repositories/PasswordsRepository"
@@ -31,7 +32,31 @@ export class PasswordsService extends Service<PasswordsRepository> {
 
 		await new Mailer().send(email, 'Recuperação de Senha', variables, file)
 
-		if (process.env.ENV === 'test')
+		if (process.env.ENV !== 'production')
 			return id
+	}
+
+	/**
+	 * recupera a senha do usuário
+	 * @param id id da requisição de recuperação de senha
+	 * @param password nova senha
+	 */
+	async reset(id: string, password: string) {
+		if (!password || password.length < 6)
+			throw new ApiError('Senha inválida.')
+
+		const { email } = await this.repository.findById(id)
+		const user = await new UsersRepository().findByEmail(email)
+
+		if (!user)
+			throw new ApiError('Usuário não encontrado', 401)
+
+		if (await compare(password, user.password))
+			throw new ApiError('A nova senha não pode ser igual a atual.')
+
+		password = await hash(password, 8)
+
+		await this.repository.delete(id)
+		await this.repository.update(password, email)
 	}
 }

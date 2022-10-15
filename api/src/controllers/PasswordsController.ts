@@ -11,6 +11,8 @@ export class PasswordsController extends Controller {
 		this.routes = [
 			// envio do e-mail para usuário que esqueceu a senha
 			{ path: '/forgot', method: 'post', handler: this.forgot, middlewares: [] },
+			// redefinição da senha
+			{ path: '/:id', method: 'patch', handler: this.recover, middlewares: [] }
 		]
 	}
 
@@ -26,5 +28,16 @@ export class PasswordsController extends Controller {
 				'Acesse sua caixa de entrada e siga as instruções para recuperar sua senha.',
 			id
 		})
+	}
+
+	/** recuperação da senha */
+	async recover(req: Request, res: Response) {
+		const { id } = req.params
+
+		const { password } = req.body
+
+		await new PasswordsService().reset(id, password)
+
+		return res.json({ message: 'Senha recuperada.' })
 	}
 }
