@@ -6,10 +6,10 @@ import { PublicRoutes } from './public.routes'
 import { PrivateRoutes } from './private.routes'
 
 import { Home } from '../pages/Home'
-
 import { Register } from '../pages/user/Register'
 import { Login } from '../pages/user/Login'
 import { Logout } from '../pages/user/Logout'
+import { ChangePassword } from '../pages/user/ChangePassword'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
@@ -31,6 +31,7 @@ export function Router() {
 
 						<Route element={<PrivateRoutes signed={signed} />}>
 							<Route path='/logout' element={<Logout />} />
+							<Route path='/change_password' element={<ChangePassword />} />
 						</Route>
 					</Routes>
 				</main>
