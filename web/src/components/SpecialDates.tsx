@@ -1,20 +1,12 @@
 import { useState, useEffect } from 'react'
 
 import { getSpecialDates } from '../utils/dates'
-import { SpecialDate } from '../interfaces/Date'
+import { Reference, SpecialDate } from '../interfaces/Date'
 import { Subtitle } from './Subtitle'
 import { COLORS } from '../theme'
 
-/** propriedades do container de datas especiais */
-interface SpecialDatesProps {
-	/** ano */
-	year: number
-	/** mês */
-	month: number
-}
-
 /** container de datas especiais do mês/ano */
-export function SpecialDates({ month, year }: SpecialDatesProps) {
+export function SpecialDates({ month, year }: Reference) {
 	const [dates, setDates] = useState<SpecialDate[]>([])
 
 	useEffect(() => {
