@@ -24,3 +24,12 @@ export interface VariableSpecialDate extends IDate {
 	/** dia, mês e ano da data especial */
 	date: Date
 }
+
+/** propriedades para busca de datas/eventos por mês e ano */
+export interface Reference {
+	/** ano */
+	year: number
+
+	/** mês */
+	month: number
+}
