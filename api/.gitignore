@@ -6,3 +6,6 @@ node_modules/
 
 # arquivos de uploads
 uploads/
+
+# arquivos gerados no build
+dist/
