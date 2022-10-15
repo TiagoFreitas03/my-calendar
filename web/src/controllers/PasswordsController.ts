@@ -13,6 +13,17 @@ export class PasswordsController {
 	}
 
 	/**
+	 * envia à API os dados para redefinição de senha
+	 * @param password nova senha
+	 * @param id id da requisição de recuperação de senha
+	 */
+	async reset(password: string, id: string) {
+		const res = await api.patch(`password/${id}`, { password })
+
+		return res.data.message as string
+	}
+
+	/**
 	 * envia à API os dados para atualização de senha
 	 * @param current senha atual
 	 * @param newPassword nova senha
