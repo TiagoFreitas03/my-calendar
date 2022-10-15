@@ -1,3 +1,4 @@
+import * as yup from 'yup'
 import { resolve } from 'path'
 import { compare, hash } from 'bcrypt'
 
@@ -6,6 +7,16 @@ import { PasswordsRepository } from "../repositories/PasswordsRepository"
 import { UsersRepository } from "../repositories/UsersRepository"
 import { ApiError } from "../errors/ApiError"
 import { Mailer } from '../utils/mailer'
+
+/** campos para atualização de senha */
+interface PasswordUpdate {
+	/** senha atual */
+	current: string
+	/** nova senha */
+	newPassword: string
+	/** id do usuário */
+	user_id: string
+}
 
 /** service de passwords */
 export class PasswordsService extends Service<PasswordsRepository> {
@@ -58,5 +69,30 @@ export class PasswordsService extends Service<PasswordsRepository> {
 
 		await this.repository.delete(id)
 		await this.repository.update(password, email)
+	}
+
+	/**
+	 * atualiza a senha do usuário
+	 * @param data dados para atualização de senha
+	 */
+	async edit(data: PasswordUpdate) {
+		const schema = yup.object().shape({
+			current: yup.string().required('Informe a senha atual'),
+			newPassword: yup.string().required('Informe a nova senha').min(6, 'Senha muito curta'),
+			user_id: yup.string().required('Usuário inválido')
+		})
+
+		await schema.validate(data, { abortEarly: false })
+
+		const user = await new UsersRepository().findById(data.user_id)
+
+		if (!await compare(data.current, user.password))
+			throw new ApiError('Senha atual incorreta.')
+
+		if (data.current === data.newPassword)
+			throw new ApiError('A nova senha não pode ser igual a atual.')
+
+		const password = await hash(data.newPassword, 8)
+		await this.repository.update(password, undefined, user.id)
 	}
 }

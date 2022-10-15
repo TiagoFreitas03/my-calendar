@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 
 import { database } from "../database"
+import { ApiError } from '../errors/ApiError'
 import { EntityNotFoundError } from '../errors/EntityNotFoundError'
 
 /** Repositório de password */
@@ -53,13 +54,17 @@ export class PasswordsRepository {
 	}
 
 	/**
-	 * atualiza a senha do usuário
+	 * atualiza a senha do usuário identificado pelo email ou id
 	 * @param password nova senha do usuário
 	 * @param email e-mail do usuário
+	 * @param id id do usuário
 	 */
-	async update(password: string, email: string) {
+	async update(password: string, email?: string, id?: string) {
+		if (!email && !id)
+			throw new ApiError('Informe o usuário para atualizar a senha')
+
 		await database.user.update({
-			where: { email },
+			where: email ? { email } : { id },
 			data: { password }
 		})
 	}
