@@ -3,7 +3,7 @@ import { Label as LabelModel } from '@prisma/client'
 import { View } from './_View'
 
 /** campos retornados pela view */
-interface LabelView {
+export interface LabelView {
 	id: number
 	name: string
 	color: string
