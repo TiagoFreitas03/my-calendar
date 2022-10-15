@@ -1,4 +1,5 @@
 import { api } from '../services/api'
+import { User } from '../interfaces/User'
 
 /** campos para cadastro de usuário */
 interface UserCreateData {
@@ -53,5 +54,12 @@ export class UsersController {
 		const res = await api.post('login', { email, password })
 
 		return res.data as AuthenticateResponse
+	}
+
+	/** busca os dados do usuário logado */
+	async show() {
+		const res = await api.get('user')
+
+		return res.data as User
 	}
 }
