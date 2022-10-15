@@ -13,6 +13,7 @@ import { ChangePassword } from '../pages/user/ChangePassword'
 import { ForgotPassword } from '../pages/user/ForgotPassword'
 import { ResetPassword } from '../pages/user/ResetPassword'
 import { Event } from '../pages/events/Event'
+import { EventDetails } from '../pages/events/EventDetails'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
@@ -38,6 +39,8 @@ export function Router() {
 							<Route path='/logout' element={<Logout />} />
 							<Route path='/change_password' element={<ChangePassword />} />
 							<Route path='/create_event' element={<Event />} />
+							<Route path='/edit_event/:id' element={<Event />} />
+							<Route path='/event/:id' element={<EventDetails />} />
 						</Route>
 					</Routes>
 				</main>
