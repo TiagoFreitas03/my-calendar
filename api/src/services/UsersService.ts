@@ -71,8 +71,6 @@ export class UsersService extends Service<UsersRepository> {
 
 		const secret = process.env.JWT_SECRET ?? 'secret'
 
-		console.log(secret)
-
 		return sign({ id: user.id }, secret)
 	}
 
