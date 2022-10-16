@@ -18,6 +18,7 @@ import { Event } from '../pages/events/Event'
 import { EventDetails } from '../pages/events/EventDetails'
 import { NextEvents } from '../pages/events/NextEvents'
 import { DayEvents } from '../pages/events/DayEvents'
+import { CreateLabel } from '../pages/CreateLabel'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
@@ -55,6 +56,7 @@ export function Router() {
 							<Route path='/event/:id' element={<EventDetails />} />
 							<Route path='/next_events' element={<NextEvents />} />
 							<Route path='/day_events/:date' element={<DayEvents />} />
+							<Route path='/create_label' element={<CreateLabel />} />
 						</Route>
 					</Routes>
 				</main>
