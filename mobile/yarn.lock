@@ -1054,6 +1054,16 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@expo-google-fonts/nunito@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/nunito/-/nunito-0.2.2.tgz#591ba2e215204939c376c5f450071ef7626b4d87"
+  integrity sha512-ETADsCjZt6LmJKj3f1D01YZ3hJU3D2S0JEKd9yuTOmW7KJGuqEB37uE6SwMbmHOEWXmdtygw2k1Smm2xg3KnEw==
+
+"@expo-google-fonts/roboto@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/roboto/-/roboto-0.2.2.tgz#0a9f4685e8d02bdb0d2d2919c102f531bdb353d4"
+  integrity sha512-qP0oZsR8rTID5T9wEXSt9yCYMnKYKlvIlrJGGpd+t71Obt2J51+51PBpvxd5c8fpABEru3zx6ENmpU9lzwr8zw==
+
 "@expo/bunyan@4.0.0", "@expo/bunyan@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@expo/bunyan/-/bunyan-4.0.0.tgz#be0c1de943c7987a9fbd309ea0b1acd605890c7b"
@@ -2678,6 +2688,11 @@ dag-map@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/dag-map/-/dag-map-1.0.2.tgz#e8379f041000ed561fc515475c1ed2c85eece8d7"
   integrity sha512-+LSAiGFwQ9dRnRdOeaj7g47ZFJcOUPukAP8J3A3fuZ1g9Y44BG+P1sgApjLXTQPOzC4+7S9Wr8kXsfpINM4jpw==
+
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 dayjs@^1.8.15:
   version "1.11.5"
