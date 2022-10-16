@@ -4,25 +4,16 @@ type SpecialDateTypes =
 	'DC' | // data comemorativa
 	'PF'   // ponto facultativo
 
-/** propriedades comunns de datas especiais */
-interface IDate {
+/** propriedades da data especial com dia e mês fixo */
+export interface SpecialDate {
+	/** número do dia */
+	day: number
+
 	/** nome da data especial */
 	name: string
 
 	/** tipo de data especial */
 	type: SpecialDateTypes
-}
-
-/** propriedades da data especial com dia e mês fixo */
-export interface SpecialDate extends IDate {
-	/** número do dia */
-	day: number
-}
-
-/** propriedades da data especial com dia e/ou mês variável */
-export interface VariableSpecialDate extends IDate {
-	/** dia, mês e ano da data especial */
-	date: Date
 }
 
 /** propriedades para busca de datas/eventos por mês e ano */
@@ -32,4 +23,19 @@ export interface Reference {
 
 	/** mês */
 	month: number
+}
+
+/** propriedades das datas especiais */
+export interface Dates {
+	/** datas especiais */
+	dates: SpecialDate[]
+
+	/** dias dos feriados */
+	holidays: number[]
+
+	/** dias das datas comemorativas */
+	celebrations: number[]
+
+	/** dias dos pontos facultativos */
+	others: number[]
 }

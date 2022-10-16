@@ -7,17 +7,17 @@ import { IconButton } from '../components/IconButton'
 import { SpecialDates } from '../components/SpecialDates'
 import { MonthEvents } from '../components/MonthEvents'
 
-import { getSpecialDates, isToday } from '../utils/dates'
+import { isToday } from '../utils/dates'
 import { toNumber } from '../utils/convertions'
 import { COLORS } from '../theme'
+import { DatesController } from '../controllers/DatesController'
+import { Dates } from '../interfaces/Date'
 
 const WEEK_DAYS = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB']
 
 export function Home() {
 	const [date, setDate] = useState(new Date())
-	const [holidays, setHolidays] = useState<number[]>([])
-	const [celebrations, setCelebrations] = useState<number[]>([])
-	const [others, setOthers] = useState<number[]>([])
+	const [specialDates, setSpecialDates] = useState<Dates>()
 
 	const month = date.getMonth()
 	const year = date.getFullYear()
@@ -26,11 +26,9 @@ export function Home() {
 
 	useEffect(() => {
 		/** datas especiais */
-		const dates = getSpecialDates(month, year)
-
-		setHolidays(dates.holidays)
-		setCelebrations(dates.celebrations)
-		setOthers(dates.others)
+		new DatesController().listByReference({ month: month + 1, year }).then(dates => {
+			setSpecialDates(dates)
+		})
 	}, [month, year])
 
 	/** decrementa o ano em 1 */
@@ -94,13 +92,13 @@ export function Home() {
 		if (isToday(day, month, year))
 			return COLORS.ORANGE
 
-		if (holidays.includes(day))
+		if (specialDates?.holidays.includes(day))
 			return COLORS.BLUE
 
-		if (celebrations.includes(day))
+		if (specialDates?.celebrations.includes(day))
 			return COLORS.PURPLE
 
-		if (others.includes(day))
+		if (specialDates?.others.includes(day))
 			return COLORS.PINK
 
 		return '#09090A'
@@ -160,7 +158,7 @@ export function Home() {
 					</tbody>
 				</table>
 
-				<SpecialDates month={month} year={year} />
+				<SpecialDates dates={specialDates?.dates ?? []} />
 			</div>
 
 			<MonthEvents month={month} year={year} />
