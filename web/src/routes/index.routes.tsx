@@ -17,10 +17,19 @@ import { ResetPassword } from '../pages/user/ResetPassword'
 import { Event } from '../pages/events/Event'
 import { EventDetails } from '../pages/events/EventDetails'
 import { NextEvents } from '../pages/events/NextEvents'
+import { DayEvents } from '../pages/events/DayEvents'
 
 /** conjunto de rotas da aplicação */
 export function Router() {
-	const { signed } = useAuth()
+	const { signed, loading } = useAuth()
+
+	if (loading) {
+		return (
+			<div className='h-[100vh] flex justify-center items-center'>
+				<h1>Carregando...</h1>
+			</div>
+		)
+	}
 
 	return (
 		<BrowserRouter>
@@ -45,6 +54,7 @@ export function Router() {
 							<Route path='/edit_event/:id' element={<Event />} />
 							<Route path='/event/:id' element={<EventDetails />} />
 							<Route path='/next_events' element={<NextEvents />} />
+							<Route path='/day_events/:date' element={<DayEvents />} />
 						</Route>
 					</Routes>
 				</main>
