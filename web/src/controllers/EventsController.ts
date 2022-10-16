@@ -85,6 +85,18 @@ export class EventsController {
 	}
 
 	/**
+	 * busca eventos na data especificada
+	 * @param date data para filtrar os eventos
+	 */
+	async searchByDay(date: Date) {
+		const ref = format(date, 'yyyy-MM-dd')
+
+		const res = await api.get(`event_day/${ref}`)
+
+		return res.data as Event[]
+	}
+
+	/**
 	 * busca um evento pelo id
 	 * @param id id do evento
 	 */
