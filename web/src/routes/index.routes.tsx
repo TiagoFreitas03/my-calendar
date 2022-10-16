@@ -6,6 +6,8 @@ import { PublicRoutes } from './public.routes'
 import { PrivateRoutes } from './private.routes'
 
 import { Home } from '../pages/Home'
+import { NotFound } from '../pages/NotFound'
+
 import { Register } from '../pages/user/Register'
 import { Login } from '../pages/user/Login'
 import { Logout } from '../pages/user/Logout'
@@ -58,6 +60,8 @@ export function Router() {
 							<Route path='/day_events/:date' element={<DayEvents />} />
 							<Route path='/create_label' element={<CreateLabel />} />
 						</Route>
+
+						<Route path='*' element={<NotFound />} />
 					</Routes>
 				</main>
 			</div>
