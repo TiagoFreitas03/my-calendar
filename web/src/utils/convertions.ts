@@ -9,3 +9,16 @@ export function toNumber(variable: any, defaultValue: number) {
 
 	return Number(variable)
 }
+
+/**
+ * converte texto no formato YYYY-MM-DD para data
+ * @param text texto no formato YYYY-MM-DD
+ * @returns texto convertido em data
+ */
+export function toDate(text: string) {
+	const [year, month, day] = text.split('-').map(x => Number(x))
+
+	const date = new Date(year, month - 1, day)
+
+	return date
+}
