@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { StatusBar, View, Text } from "react-native"
+import { useFonts as useNunito, Nunito_700Bold } from '@expo-google-fonts/nunito'
+import { useFonts as useRoboto, Roboto_400Regular } from '@expo-google-fonts/roboto'
+
+import { Home } from './src/screens/Home'
 
 export default function App() {
+	const [nunitoLoaded] = useNunito({ Nunito_700Bold })
+	const [robotoLoaded] = useRoboto({ Roboto_400Regular })
+
+	if (!(nunitoLoaded && robotoLoaded)) {
+		return (
+			<View>
+				<Text>carregando</Text>
+			</View>
+		)
+	}
+
 	return (
-		<View style={styles.container}>
-			<Text>Open up App.tsx to start working on your app!</Text>
-			<StatusBar style="auto" />
-		</View>
+		<>
+			<Home />
+
+			<StatusBar />
+		</>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-})
