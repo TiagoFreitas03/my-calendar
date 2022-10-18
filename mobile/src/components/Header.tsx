@@ -1,10 +1,12 @@
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native'
+import { DrawerHeaderProps } from '@react-navigation/drawer'
 import Icon from '@expo/vector-icons/Ionicons'
 
 import { logo } from '../assets'
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '../theme'
 
-export function Header() {
+/** cabeçalho da aplicação */
+export function Header({ navigation }: DrawerHeaderProps) {
 	return (
 		<View style={styles.container}>
 			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -13,7 +15,7 @@ export function Header() {
 				<Text style={styles.title}>MyCalendar</Text>
 			</View>
 
-			<Pressable>
+			<Pressable onPress={() => navigation.openDrawer()}>
 				<Icon name='menu' size={30} color={COLORS.GRAY_100} />
 			</Pressable>
 		</View>
