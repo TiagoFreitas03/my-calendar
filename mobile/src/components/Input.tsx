@@ -1,9 +1,10 @@
 import { TextInputProps, View, TextInput, Text, StyleSheet, Dimensions } from "react-native"
 
+import { Label } from './Label'
 import { COLORS, FONT_FAMILY, FONT_SIZE } from "../theme"
 
 /** propriedades do input */
-interface InputProps extends TextInputProps {
+export interface InputProps extends TextInputProps {
 	/** título do input */
 	label?: string
 
@@ -15,13 +16,14 @@ interface InputProps extends TextInputProps {
 export function Input({ label, error, ...rest }: InputProps) {
 	return (
 		<View style={styles.container}>
-			{
-				label &&
-				<Text style={styles.label}>
-					{ label }
-					{ error && <Text>{error}</Text> }
-				</Text>
-			}
+			<View style={styles.labelContainer}>
+				{
+					label && <>
+						<Label title={label} />
+						{ error && <Text style={styles.error}>{ error }*</Text> }
+					</>
+				}
+			</View>
 
 			<TextInput
 				{...rest}
@@ -37,11 +39,9 @@ const styles = StyleSheet.create({
 		marginVertical: 12,
 	},
 
-	label: {
-		color: COLORS.GRAY_100,
-		fontFamily: FONT_FAMILY.REGULAR,
-		fontSize: FONT_SIZE.MD,
-		paddingBottom: 8,
+	labelContainer: {
+		flexDirection: 'row',
+		alignItems: 'baseline'
 	},
 
 	input: {
@@ -52,5 +52,12 @@ const styles = StyleSheet.create({
 		padding: 12,
 		color: COLORS.GRAY_900,
 		width: Dimensions.get('window').width - 50,
+	},
+
+	error: {
+		color: COLORS.PINK_500,
+		marginLeft: 12,
+		fontFamily: FONT_FAMILY.REGULAR,
+		fontSize: FONT_SIZE.SM
 	}
 })
