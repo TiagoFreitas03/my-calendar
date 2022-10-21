@@ -22,3 +22,16 @@ export function toDate(text: string) {
 
 	return date
 }
+
+/**
+ * converte data no formato DD/MM/YYYY para o formato YYYY-MM-DD
+ * @param date data no formato DD/MM/YYYY
+ */
+export function convertDateFormat(date: string) {
+	if (!(/^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/]\d{4}$/).test(date))
+		return date
+
+	const parts = date.split('/')
+
+	return parts.reverse().join('-')
+}
