@@ -14,8 +14,10 @@ export const upload = multer({
 	limits: {
 		fileSize: 4 * 1024 * 1024, // 4MB
 	},
-	fileFilter: (req, file, cb) => {
-		if (!['image/jpeg', 'image/png'].includes(file.mimetype))
+	fileFilter: (_, file, cb) => {
+		const ext = path.extname(file.originalname)
+
+		if (!['.png', '.jpg', '.jpeg', '.gif'].includes(ext))
 			return cb(null, false)
 
 		cb(null, true)
