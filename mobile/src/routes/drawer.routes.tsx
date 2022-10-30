@@ -10,6 +10,7 @@ import { Home } from '../screens/Home'
 import { Loading } from '../screens/Loading'
 import { Login } from '../screens/user/Login'
 import { Register } from '../screens/user/Register'
+import { Logout } from '../screens/user/Logout'
 
 /** tipagem com parâmetros para as rotas */
 export type DrawerStackParamList = {
@@ -19,13 +20,15 @@ export type DrawerStackParamList = {
 	login: undefined
 	/** tela de cadastro de usuário */
 	register: undefined
+	/** tela de cadastro/edição de evento */
+	logout: undefined
 }
 
 const { Navigator, Screen } = createDrawerNavigator<DrawerStackParamList>()
 
 /** rotas que aparecem no menu lateral */
 export function DrawerRoutes() {
-	const { loading } = useAuth()
+	const { loading, signed } = useAuth()
 
 	if (loading)
 		return <Loading />
@@ -51,25 +54,39 @@ export function DrawerRoutes() {
 				options={{ title: 'Início', drawerIcon: () => <Icon name='home' /> }}
 			/>
 
-			<Screen
-				name='login'
-				component={Login}
-				options={{
-					title: 'Login',
-					drawerIcon: () => <Icon name='log-in' />,
-					headerShown: false
-				}}
-			/>
+			{
+				!signed ? (
+					<>
+						<Screen
+							name='login'
+							component={Login}
+							options={{
+								title: 'Login',
+								drawerIcon: () => <Icon name='log-in' />,
+								headerShown: false
+							}}
+						/>
 
-			<Screen
-				name='register'
-				component={Register}
-				options={{
-					title: 'Cadastre-se',
-					drawerIcon: () => <Icon name='user' />,
-					headerShown: false
-				}}
-			/>
+						<Screen
+							name='register'
+							component={Register}
+							options={{
+								title: 'Cadastre-se',
+								drawerIcon: () => <Icon name='user' />,
+								headerShown: false
+							}}
+						/>
+					</>
+				) : (
+					<>
+						<Screen
+							name='logout'
+							component={Logout}
+							options={{ title: 'Sair', drawerIcon: () => <Icon name='log-out' /> }}
+						/>
+					</>
+				)
+			}
 		</Navigator>
 	)
 }
