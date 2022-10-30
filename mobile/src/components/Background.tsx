@@ -19,13 +19,12 @@ export function Background({ center, children }: BackgroundProps) {
 			contentContainerStyle={[
 				styles.container,
 				center && {
-					flexGrow: 1,
 					justifyContent: 'center',
 					alignItems: 'center',
 					height: Dimensions.get('window').height
 				}
 			]}
-		>
+			>
 			{ children }
 		</ScrollView>
 	)
@@ -34,5 +33,6 @@ export function Background({ center, children }: BackgroundProps) {
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: COLORS.GRAY_900,
+		flexGrow: 1,
 	}
 })
