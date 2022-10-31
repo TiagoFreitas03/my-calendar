@@ -29,6 +29,7 @@ export function Input({ label, error, ...rest }: InputProps) {
 				{...rest}
 				selectionColor={COLORS.GRAY_300}
 				style={styles.input}
+				multiline={(rest.numberOfLines && rest.numberOfLines > 1) ? true : false}
 			/>
 		</View>
 	)
