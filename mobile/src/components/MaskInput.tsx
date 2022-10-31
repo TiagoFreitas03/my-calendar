@@ -1,9 +1,10 @@
+import { Platform } from 'react-native'
 import { InputProps, Input } from './Input'
 
 /** propriedades do input com máscara */
 interface MaskInputProps extends InputProps {
 	/** tipo de máscara (data ou hora) */
-	mask: 'date' | 'time'
+	mask: 'date' | 'time' | 'hex'
 
 	/** evento de alteração do valor */
 	onType: (value: string) => void
@@ -26,6 +27,13 @@ export function MaskInput({ mask, onType, ...rest }: MaskInputProps) {
 			text = text.replace(/\D/g, '')
 			text = text.replace(/^(\d{2})(\d{2})/, '$1:$2')
 		}
+		else if (mask === 'hex') {
+			if (text.length > 7)
+				return
+
+			text = text.replace(/[^A-Fa-f0-9]/g, '')
+			text = `#${text}`
+		}
 
 		onType(text)
 	}
@@ -33,6 +41,10 @@ export function MaskInput({ mask, onType, ...rest }: MaskInputProps) {
 	return (
 		<Input
 			{...rest}
+			keyboardType={
+				mask === 'date' || mask === 'time' ?
+					Platform.OS === 'android' ? 'numeric' : 'number-pad' :
+					'default' }
 			onChangeText={text => handleChange(text)}
 		/>
 	)
