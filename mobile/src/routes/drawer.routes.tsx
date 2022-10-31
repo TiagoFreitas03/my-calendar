@@ -11,6 +11,8 @@ import { Loading } from '../screens/Loading'
 import { Login } from '../screens/user/Login'
 import { Register } from '../screens/user/Register'
 import { Logout } from '../screens/user/Logout'
+import { Event } from '../screens/events/Event'
+import { CreateLabel } from '../screens/CreateLabel'
 
 /** tipagem com parâmetros para as rotas */
 export type DrawerStackParamList = {
@@ -20,8 +22,14 @@ export type DrawerStackParamList = {
 	login: undefined
 	/** tela de cadastro de usuário */
 	register: undefined
-	/** tela de cadastro/edição de evento */
+	/** tela de logout */
 	logout: undefined
+	/** tela de cadastro/edição de evento */
+	event: {
+		id?: string
+	}
+	/** tela de cadastro de label */
+	label: undefined
 }
 
 const { Navigator, Screen } = createDrawerNavigator<DrawerStackParamList>()
@@ -79,6 +87,18 @@ export function DrawerRoutes() {
 					</>
 				) : (
 					<>
+						<Screen
+							name='event'
+							component={Event}
+							options={{ title: 'Criar evento', drawerIcon: () => <Icon name='plus' /> }}
+						/>
+
+						<Screen
+							name='label'
+							component={CreateLabel}
+							options={{ title: 'Criar etiqueta', drawerIcon: () => <Icon name='tag' /> }}
+						/>
+
 						<Screen
 							name='logout'
 							component={Logout}
