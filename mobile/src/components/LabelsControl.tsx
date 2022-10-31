@@ -5,7 +5,6 @@ import { Label } from "../interfaces/Label"
 import { LabelsController } from '../controllers/LabelsController'
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '../theme'
 import { Labels } from './Labels'
-import { Background } from './Background'
 import { Input } from './Input'
 
 /** propriedades do controle de labels */
@@ -52,45 +51,43 @@ export function LabelsControl({ onChange }: LabelsControlProps) {
 	}
 
 	return (
-		<Background>
-			<View style={styles.container}>
-				<Text style={styles.title}>Etiquetas</Text>
+		<View style={styles.container}>
+			<Text style={styles.title}>Etiquetas</Text>
 
-				<Input value={name} onChangeText={setName} placeholder='Pesquise pelo nome da etiqueta' />
+			<Input value={name} onChangeText={setName} placeholder='Pesquise pelo nome da etiqueta' />
 
-				{
-					name !== '' &&
-					<View style={styles.searchResults}>
-						{
-							labels.length > 0 ?
-								labels.map(label => (
-									<Text
-										key={label.id}
-										style={[styles.text, styles.label, { borderColor: label.color }]}
-										onPress={() => addLabel(label)}
-									>
-										{label.name}
-									</Text>
-								)) :
-								<Text style={styles.text}>Nenhuma etiqueta encontrada.</Text>
-						}
-					</View>
-				}
+			{
+				name !== '' &&
+				<View style={styles.searchResults}>
+					{
+						labels.length > 0 ?
+							labels.map(label => (
+								<Text
+									key={label.id}
+									style={[styles.text, styles.label, { borderColor: label.color }]}
+									onPress={() => addLabel(label)}
+								>
+									{label.name}
+								</Text>
+							)) :
+							<Text style={styles.text}>Nenhuma etiqueta encontrada.</Text>
+					}
+				</View>
+			}
 
-				{
-					selected.length > 0 ?
-						<Labels data={selected} onRemove={id => remove(id)} showRemoveButton /> :
-						<Text style={styles.text}>Nenhuma etiqueta selecionada.</Text>
-				}
-			</View>
-		</Background>
+			{
+				selected.length > 0 ?
+					<Labels data={selected} onRemove={id => remove(id)} showRemoveButton /> :
+					<Text style={styles.text}>Nenhuma etiqueta selecionada.</Text>
+			}
+		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 4,
-		paddingBottom: 16,
+		paddingBottom: 12,
 	},
 
 	title: {
@@ -105,7 +102,7 @@ const styles = StyleSheet.create({
 		marginTop: -8,
 		borderRadius: 8,
 		borderWidth: 1,
-		borderColor: COLORS.GRAY_500
+		borderColor: COLORS.GRAY_500,
 	},
 
 	label: {
