@@ -46,6 +46,7 @@ export function DrawerRoutes() {
 			drawerContent={props => <Drawer {...props} />}
 			screenOptions={{
 				header: (props) => <Header {...props} />,
+				unmountOnBlur: true,
 				drawerPosition: 'right',
 				drawerActiveBackgroundColor: COLORS.BLUE_500,
 				drawerLabelStyle: {
@@ -90,6 +91,7 @@ export function DrawerRoutes() {
 						<Screen
 							name='event'
 							component={Event}
+							initialParams={{ id: undefined }}
 							options={{ title: 'Criar evento', drawerIcon: () => <Icon name='plus' /> }}
 						/>
 
