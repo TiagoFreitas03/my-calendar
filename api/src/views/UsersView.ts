@@ -4,6 +4,7 @@ import { User as UserModel } from '@prisma/client'
 import { View } from './_View'
 import { dateToString } from '../utils/convertions'
 
+/** campos retornados pela view */
 interface UserView {
 	id: string
 	name: string
@@ -13,6 +14,7 @@ interface UserView {
 	created_at: string
 }
 
+/** view de usuários */
 export class UsersView extends View<UserModel, UserView> {
 	render(user: UserModel) {
 		const { id, name, email, birth_date, picture, created_at } = user

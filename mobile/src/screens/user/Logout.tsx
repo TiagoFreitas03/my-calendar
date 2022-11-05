@@ -6,6 +6,7 @@ import { Background } from "../../components/Background"
 import { useAuth } from '../../contexts/AuthContext'
 import { COLORS, FONT_FAMILY, FONT_SIZE } from "../../theme"
 
+/** tela de logout */
 export function Logout() {
 	const { signOut } = useAuth()
 

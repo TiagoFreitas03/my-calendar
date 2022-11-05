@@ -5,13 +5,16 @@ import { verify } from 'jsonwebtoken'
 import { ApiError } from '../errors/ApiError'
 import { UsersRepository } from '../repositories/UsersRepository'
 
+/** propriedades do JWT decodificado */
 interface DecodedToken {
 	id: string
 }
 
+/** segredo para decodificar o JWT */
 const JWT_SECRET = process.env.JWT_SECRET ?? ''
 
-async function verifyJwt(req: Request, res: Response, next: NextFunction) {
+/** função que verifica se o usuário está logado e possui um JWT válido */
+async function verifyJwt(req: Request, _res: Response, next: NextFunction) {
 	const { authorization } = req.headers
 
 	if (!authorization)
