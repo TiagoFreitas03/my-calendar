@@ -2,19 +2,14 @@ import * as yup from 'yup'
 
 import { Service } from "./_Service"
 import { EventsRepository } from "../repositories/EventsRepository"
-import { LabelsRepository } from '../repositories/LabelsRepository'
-import { isDateTime, hasDuplicates } from '../utils/validations'
+import { isDateTime } from '../utils/validations'
 import { ApiError } from '../errors/ApiError'
-import {
-	EventSearchFilters, EventBase, EventLabel, EventReferenceFilters
-} from '../interfaces/Event'
+import { EventSearchFilters, EventBase, EventReferenceFilters } from '../interfaces/Event'
 
 /** dados para cadastro/atualização de evento */
 interface EventData extends EventBase {
 	start: string
 	end?: string
-	notify: boolean
-	labels_ids: number[]
 }
 
 /** service de eventos */
@@ -25,7 +20,7 @@ export class EventsService extends Service<EventsRepository> {
 
 	/** valida dados do cadastro/edição do evento */
 	async validate(data: EventData) {
-		const { start, end, notify, labels_ids, ...rest } = data
+		const { start, end, ...rest } = data
 
 		const schema = yup.object().shape({
 			name: yup.string().required('Informe o nome do compromisso'),
@@ -35,35 +30,20 @@ export class EventsService extends Service<EventsRepository> {
 			end: yup.string()
 				.test('matches', 'Data inválida', () => !end ? true : isDateTime(end)),
 			user_id: yup.string().required('Usuário inválido'),
-			labels_ids: yup.array(yup.number().required('Etiqueta inválida'))
-				.test('matches', 'Etiquetas repetidas', () => !hasDuplicates(labels_ids ?? []))
 		})
 
 		await schema.validate(data, { abortEarly: false })
 
-		/** labels do evento */
-		const labels: EventLabel[] = []
-		/** repositório de labels */
-		const labelsRepository = new LabelsRepository()
-
-		if (labels_ids && labels_ids.length > 0) {
-			for (let id of labels_ids) {
-				const label = await labelsRepository.findById(id)
-
-				if (label.user_id === data.user_id)
-					labels.push({ label_id: label.id })
-			}
-		}
-
 		/** data de início */
 		const s = new Date(start)
+
 		/** data de fim */
 		const e = end ? new Date(end) : null
 
 		if (e && e.getTime() <= s.getTime())
 			throw new ApiError('Intervalo de datas/horários inválido')
 
-		return { ...rest, start: s, end: e, notified: !notify, labels }
+		return { ...rest, start: s, end: e }
 	}
 
 	/**
@@ -118,7 +98,7 @@ export class EventsService extends Service<EventsRepository> {
 	 * @param user_id id do usuário fazendo a pesquisa
 	 */
 	async findById(id: string, user_id: string) {
-		const event = await this.repository.findById(id, ['labels'])
+		const event = await this.repository.findById(id)
 
 		if (event.user_id !== user_id)
 			throw new ApiError('Você não pode visualizar este evento.', 401)

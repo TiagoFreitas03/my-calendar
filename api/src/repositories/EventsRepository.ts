@@ -2,16 +2,12 @@ import { v4 as uuid } from 'uuid'
 
 import { database } from '../database'
 import { EntityNotFoundError } from '../errors/EntityNotFoundError'
-import {
-	EventSearchFilters, EventBase, EventLabel, EventReferenceFilters
-} from '../interfaces/Event'
+import { EventSearchFilters, EventBase, EventReferenceFilters } from '../interfaces/Event'
 
 /** dados do evento */
 interface EventData extends EventBase {
 	start: Date
 	end: Date | null
-	notified: boolean
-	labels: EventLabel[]
 }
 
 /** dados para cadastro de evento */
@@ -24,14 +20,11 @@ export class EventsRepository {
 	 * cadastra evento no banco de dados
 	 * @param data dados para cadastro do evento
 	 */
-	async create({ labels, ...data }: EventCreate) {
+	async create(data: EventCreate) {
 		const event = await database.event.create({
 			data: {
 				id: uuid(),
-				...data,
-				labels: {
-					createMany: { data: labels }
-				}
+				...data
 			}
 		})
 
@@ -43,14 +36,9 @@ export class EventsRepository {
 	 * @param id id do evento
 	 * @param relations tabelas relacionadas que devem ser incluídas na busca
 	 */
-	async findById(id: string, relations: string[] = []) {
+	async findById(id: string) {
 		const event = await database.event.findFirst({
-			where: { id },
-			include: {
-				labels: {
-					include: { label: relations.includes('labels') }
-				}
-			}
+			where: { id }
 		})
 
 		if (!event)
@@ -64,40 +52,11 @@ export class EventsRepository {
 	 * @param id id do evento
 	 * @param data dados para serem atualizados
 	 */
-	async update(id: string, { labels, ...data }: EventData) {
-		const event = await database.event.update({
+	async update(id: string, data: EventData) {
+		await database.event.update({
 			where: { id },
-			data,
-			include: { labels: true }
+			data
 		})
-
-		let labelsIds = labels.map(label => label.label_id)
-
-		/** labels to remove */
-		const remove = event.labels.map(label => {
-			return labelsIds.includes(label.label_id) ? 0 : label.label_id
-		}).filter(label => label !== 0)
-
-		labelsIds = event.labels.map(label => label.label_id)
-
-		/** labels to add */
-		const add = labels.map(label => {
-			return labelsIds.includes(label.label_id) ? 0 : label.label_id
-		}).filter(label => label !== 0)
-
-		for (let label of remove) {
-			await database.eventLabel.delete({
-				where: {
-					event_id_label_id: { event_id: id, label_id: label }
-				}
-			})
-		}
-
-		for (let label of add) {
-			await database.eventLabel.create({
-				data: { event_id: id, label_id: label }
-			})
-		}
 	}
 
 	/** busca e retorna lista de eventos filtrados pelo nome */

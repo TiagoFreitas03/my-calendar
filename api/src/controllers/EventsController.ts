@@ -34,28 +34,24 @@ export class EventsController extends Controller {
 
 	/** cadastro de evento */
 	async create(req: Request, res: Response) {
-		const { name, description, start, end, notify, labels_ids } = req.body
+		const { name, description, start, end } = req.body
 
 		const { user_id } = req
 
 		/** id do evento */
-		const event = await new EventsService().create({
-			name, description, start, end, notify, labels_ids, user_id
-		})
+		const event = await new EventsService().create({ name, description, start, end, user_id })
 
 		return res.status(201).json({ message: 'Compromisso cadastrado', event })
 	}
 
 	/** atualização de evento */
 	async update(req: Request, res: Response) {
-		const { name, description, start, end, notify, labels_ids } = req.body
+		const { name, description, start, end } = req.body
 
 		const { id } = req.params
 		const { user_id } = req
 
-		await new EventsService().edit({
-			name, description, start, end, notify, labels_ids, user_id
-		}, id)
+		await new EventsService().edit({ name, description, start, end, user_id }, id)
 
 		return res.json({ message: 'Compromisso atualizado' })
 	}
