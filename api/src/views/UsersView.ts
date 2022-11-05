@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import path from 'path'
 import { User as UserModel } from '@prisma/client'
 
 import { View } from './_View'

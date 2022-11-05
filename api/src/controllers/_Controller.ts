@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction, Router } from 'express'
+import { Response, Request, Router } from 'express'
 
 /** propriedades da rota */
 interface IRoute {
