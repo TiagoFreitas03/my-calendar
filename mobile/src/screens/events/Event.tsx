@@ -4,18 +4,16 @@ import { useNavigation } from '@react-navigation/native'
 import type { DrawerScreenProps } from '@react-navigation/drawer'
 import { format } from 'date-fns'
 
-import { DrawerStackParamList } from '../../routes/drawer.routes'
+import { RootStackParamList } from '../../routes/index.routes'
 import { COLORS, FONT_FAMILY, FONT_SIZE } from "../../theme"
 import { EventsController } from '../../controllers/EventsController'
-import { Label } from '../../interfaces/Label'
 import { Background } from "../../components/Background"
 import { Input } from "../../components/Input"
 import { MaskInput } from '../../components/MaskInput'
-import { LabelsControl } from '../../components/LabelsControl'
 import { Button } from '../../components/Button'
 
 /** propriedades da tela de cadastro/edição de evento */
-type EventProps = DrawerScreenProps<DrawerStackParamList, 'event'>
+type EventProps = DrawerScreenProps<RootStackParamList, 'update_event' | 'create_event'>
 
 /** mensagens de erro no cadastro/edição de evento */
 interface CreateEventError {
@@ -38,7 +36,6 @@ export function Event({ route }: EventProps) {
 	const [startTime, setStartTime] = useState(format(new Date, 'HH:mm'))
 	const [end, setEnd] = useState<Optional>('')
 	const [endTime, setEndTime] = useState<Optional>('')
-	const [labels, setLabels] = useState<Label[]>([])
 	const [error, setError] = useState<CreateEventError>()
 
 	useEffect(() => {
@@ -50,9 +47,6 @@ export function Event({ route }: EventProps) {
 				setStartTime(data.startTime)
 				setEnd(data.endDate)
 				setEndTime(data.endTime)
-
-				if (data.labels)
-					setLabels(data.labels)
 			})
 		}
 	}, [id])
@@ -65,7 +59,6 @@ export function Event({ route }: EventProps) {
 				description,
 				start: `${start.split('/').reverse().join('-')} ${startTime}`,
 				end: end ? `${end.split('/').reverse().join('-')} ${endTime}` : undefined,
-				labels_ids: labels.map(label => label.id)
 			}
 
 			let message = '', event_id = id
@@ -113,8 +106,6 @@ export function Event({ route }: EventProps) {
 
 					<MaskInput mask='time' value={endTime} onType={v => setEndTime(v)} error={error?.end} />
 				</View>
-
-				<LabelsControl onChange={l => setLabels(l)} />
 
 				<Button title='Cadastrar' onPress={handleCreateOrEditEvent} />
 			</View>
