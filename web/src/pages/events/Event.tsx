@@ -3,8 +3,6 @@ import { format } from "date-fns"
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { Input } from "../../components/Input"
-import { LabelsControl } from '../../components/LabelsControl'
-import { Label } from '../../interfaces/Label'
 import { EventsController } from '../../controllers/EventsController'
 import { useAlert } from '../../contexts/AlertContext'
 
@@ -26,8 +24,6 @@ export function Event() {
 	const [startTime, setStartTime] = useState(format(new Date, 'HH:mm'))
 	const [end, setEnd] = useState<Optional>('')
 	const [endTime, setEndTime] = useState<Optional>('')
-	const [notify, setNotify] = useState(false)
-	const [labels, setLabels] = useState<Label[]>([])
 	const [error, setError] = useState<CreateEventError>()
 
 	const { show } = useAlert()
@@ -43,9 +39,6 @@ export function Event() {
 				setStartTime(data.startTime)
 				setEnd(data.endDate)
 				setEndTime(data.endTime)
-
-				if (data.labels)
-					setLabels(data.labels)
 			})
 		}
 	}, [id])
@@ -60,8 +53,6 @@ export function Event() {
 				description,
 				start: `${start} ${startTime}`,
 				end: end ? `${end} ${endTime}` : undefined,
-				notify,
-				labels_ids: labels.map(label => label.id)
 			}
 
 			let message = '', event_id = id
@@ -101,6 +92,14 @@ export function Event() {
 					onChange={e => setName(e.target.value)}
 				/>
 
+				<label className="block mb-2">Descrição</label>
+				<textarea
+					rows={3}
+					className="border rounded w-full py-2 px-3 mb-3 text-gray-900 bg-white"
+					value={description}
+					onChange={e => setDescription(e.target.value)}
+				/>
+
 				<div className="border-gray-500 border-2 rounded px-4 pt-5 mb-4">
 					<label className="block mb-2">
 						Início <span className='text-red-400 ml-1'>{error?.start}</span>
@@ -132,27 +131,6 @@ export function Event() {
 						</div>
 					</div>
 				</div>
-
-				<div className="flex items-center mb-4">
-					<input
-						type="checkbox"
-						className="w-5 h-5 text-blue-600"
-						checked={notify}
-						onChange={() => setNotify(!notify)}
-					/>
-
-					<label className="ml-2">Receber notificação</label>
-				</div>
-
-				<LabelsControl onChange={labels => setLabels(labels)} />
-
-				<label className="block mb-2">Descrição</label>
-				<textarea
-					rows={3}
-					className="border rounded w-full py-2 px-3 mb-3 text-gray-900 bg-white"
-					value={description}
-					onChange={e => setDescription(e.target.value)}
-				/>
 
 				<div className="flex gap-4 text-lg text-gray-50">
 					<button className="bg-blue-500 hover:bg-blue-600 py-2 px-8 rounded" type="submit">

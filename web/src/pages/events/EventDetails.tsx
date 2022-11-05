@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams, Navigate, Link, useNavigate } from 'react-router-dom'
-import { Labels } from '../../components/Labels'
 import { useAlert } from '../../contexts/AlertContext'
 
 import { EventsController } from '../../controllers/EventsController'
@@ -69,12 +68,6 @@ export function EventDetails() {
 					<p className='mb-4'>Início: {event.start}</p>
 
 					{ event.end && <p className='mb-4'>Fim: {event.end}</p> }
-
-					{ event.labels && event.labels.length > 0  && <>
-						<h3 className='text-lg mt-8'>Etiquetas</h3>
-
-						<Labels data={event.labels} />
-					</>}
 				</div>
 			) : (
 				<p>O evento não foi encontrado.</p>

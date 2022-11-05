@@ -1,5 +1,3 @@
-import { Label } from './Label'
-
 /** informações do evento */
 export interface Event {
 	/** id */
@@ -31,7 +29,4 @@ export interface Event {
 
 	/** data de criação do escrito por extenso */
 	created_at: string
-
-	/** etiquetas do evento */
-	labels?: Label[]
 }

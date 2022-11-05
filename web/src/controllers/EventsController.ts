@@ -9,8 +9,6 @@ interface EventData {
 	description?: string
 	start: string
 	end?: string
-	notify: boolean
-	labels_ids?: number[]
 }
 
 /** propriedades da resposta da API para a crição de um evento  */
