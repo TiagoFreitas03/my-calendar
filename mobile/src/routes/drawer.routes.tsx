@@ -1,5 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
+import { RootStackParamList } from './index.routes'
 import { useAuth } from '../contexts/AuthContext'
 import { Header } from '../components/Header'
 import { Drawer } from '../components/Drawer'
@@ -12,27 +13,8 @@ import { Login } from '../screens/user/Login'
 import { Register } from '../screens/user/Register'
 import { Logout } from '../screens/user/Logout'
 import { Event } from '../screens/events/Event'
-import { CreateLabel } from '../screens/CreateLabel'
 
-/** tipagem com parâmetros para as rotas */
-export type DrawerStackParamList = {
-	/** tela inicial */
-	home: undefined
-	/** tela de login */
-	login: undefined
-	/** tela de cadastro de usuário */
-	register: undefined
-	/** tela de logout */
-	logout: undefined
-	/** tela de cadastro/edição de evento */
-	event: {
-		id?: string
-	}
-	/** tela de cadastro de label */
-	label: undefined
-}
-
-const { Navigator, Screen } = createDrawerNavigator<DrawerStackParamList>()
+const { Navigator, Screen } = createDrawerNavigator<RootStackParamList>()
 
 /** rotas que aparecem no menu lateral */
 export function DrawerRoutes() {
@@ -89,16 +71,9 @@ export function DrawerRoutes() {
 				) : (
 					<>
 						<Screen
-							name='event'
+							name='create_event'
 							component={Event}
-							initialParams={{ id: undefined }}
 							options={{ title: 'Criar evento', drawerIcon: () => <Icon name='plus' /> }}
-						/>
-
-						<Screen
-							name='label'
-							component={CreateLabel}
-							options={{ title: 'Criar etiqueta', drawerIcon: () => <Icon name='tag' /> }}
 						/>
 
 						<Screen

@@ -1,7 +1,7 @@
-import { DrawerStackParamList } from './drawer.routes'
+import { RootStackParamList } from './index.routes'
 
 declare global {
 	namespace ReactNavigation {
-		interface RootParamList extends DrawerStackParamList {}
+		interface RootParamList extends RootStackParamList {}
 	}
 }
