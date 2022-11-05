@@ -89,7 +89,7 @@ export function Event({ route }: EventProps) {
 	return (
 		<Background>
 			<View style={styles.container}>
-				<Text style={styles.title}>Novo Evento</Text>
+				<Text style={styles.title}>{ id ? 'Editar' : 'Novo' } Evento</Text>
 
 				<Input label="Nome" value={name} error={error?.name} onChangeText={setName} />
 
@@ -107,7 +107,7 @@ export function Event({ route }: EventProps) {
 					<MaskInput mask='time' value={endTime} onType={v => setEndTime(v)} error={error?.end} />
 				</View>
 
-				<Button title='Cadastrar' onPress={handleCreateOrEditEvent} />
+				<Button title={ id ? 'Atualizar' : 'Cadastrar' } onPress={handleCreateOrEditEvent} />
 			</View>
 		</Background>
 	)
