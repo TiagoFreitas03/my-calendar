@@ -13,6 +13,7 @@ import { Login } from '../screens/user/Login'
 import { Register } from '../screens/user/Register'
 import { Logout } from '../screens/user/Logout'
 import { Event } from '../screens/events/Event'
+import { NextEvents } from '../screens/events/NextEvents'
 
 const { Navigator, Screen } = createDrawerNavigator<RootStackParamList>()
 
@@ -74,6 +75,12 @@ export function DrawerRoutes() {
 							name='create_event'
 							component={Event}
 							options={{ title: 'Criar evento', drawerIcon: () => <Icon name='plus' /> }}
+						/>
+
+						<Screen
+							name='next_events'
+							component={NextEvents}
+							options={{ title: 'Próximos eventos', drawerIcon: () => <Icon name='calendar' /> }}
 						/>
 
 						<Screen

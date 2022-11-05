@@ -3,6 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { DrawerRoutes } from './drawer.routes'
 
+import { Event } from '../screens/events/Event'
+import { EventDetails } from '../screens/events/EventDetails'
+
 /** tipagem com parâmetros para as rotas */
 export type RootStackParamList = {
 	/** menu lateral */
@@ -22,6 +25,13 @@ export type RootStackParamList = {
 		/** id do evento que será editado */
 		id: string
 	}
+	/** tela dos próximos eventos */
+	next_events: undefined
+	/** tela de detalhe do evento */
+	event_details: {
+		/** id do evento que será detalhado */
+		id: string
+	}
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>()
@@ -32,6 +42,10 @@ export function Routes() {
 		<NavigationContainer>
 			<Navigator screenOptions={{ headerShown: false }}>
 				<Screen name='drawer' component={DrawerRoutes} />
+
+				<Screen name='update_event' component={Event} />
+
+				<Screen name='event_details' component={EventDetails} />
 			</Navigator>
 		</NavigationContainer>
 	)
