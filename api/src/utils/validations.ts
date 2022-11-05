@@ -32,12 +32,4 @@ function isDateTime(datetime: string) {
 	return isDateValid(date)
 }
 
-/**
- * verifica se um array tem elementos repetidos
- * @param array array que será verificado
- */
-function hasDuplicates<T>(array: Array<T>) {
-	return (new Set(array).size != array.length)
-}
-
-export { isDateValid, isDateTime, hasDuplicates }
+export { isDateValid, isDateTime }
