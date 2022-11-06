@@ -22,7 +22,7 @@ export function PageButton({ children, color, onSelect }: PageButtonProps) {
 			onPress={onSelect}
 			style={{
 				borderWidth: 2,
-				borderColor: COLORS.BLUE_600,
+				borderColor: COLORS.BLUE_500,
 				borderRadius: 12,
 				marginHorizontal: 4,
 				backgroundColor: color ?? COLORS.GRAY_700,

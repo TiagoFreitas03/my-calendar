@@ -74,7 +74,7 @@ export function Pagination(props: PaginationProps) {
 						<PageButton
 							key={page}
 							onSelect={() => handleChangePage(page)}
-							color={current === page ? COLORS.BLUE_600 : undefined}
+							color={current === page ? COLORS.BLUE_500 : undefined}
 						>
 							<Text style={styles.buttonText}>{page}</Text>
 						</PageButton>
