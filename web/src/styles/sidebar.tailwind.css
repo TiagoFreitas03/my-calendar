@@ -2,7 +2,7 @@ aside.toggled {
 	margin-right: 0;
 }
 
-aside a {
+aside a, aside button {
 	@apply text-gray-50 block no-underline rounded-lg p-3 text-xl mb-4 transition-colors;
 
 	font-family: Nunito, sans-serif;

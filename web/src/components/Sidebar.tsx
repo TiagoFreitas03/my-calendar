@@ -22,7 +22,7 @@ interface MenuLinkProps extends LinkProps {
 }
 
 export function Sidebar({ onClose: close }: SidebarProps) {
-	const { signed } = useAuth()
+	const { signed, signOut } = useAuth()
 
 	const [user, setUser] = useState<User>()
 
@@ -72,7 +72,16 @@ export function Sidebar({ onClose: close }: SidebarProps) {
 					<MenuLink icon='calendar-plus' text='Cadastrar Evento' to='/create_event' />
 					<MenuLink icon='calendar-days' text='Próximos Eventos' to='/next_events' />
 					<MenuLink icon='key' text='Alterar Senha' to='/change_password' />
-					<MenuLink icon='arrow-right-from-bracket' text='Sair' to='/logout' />
+
+					<button
+						className='border hover:bg-blue-500 p-2 text-base w-full'
+						onClick={() => {
+							signOut()
+							close()
+						}}
+					>
+						<i className='mr-1 fa-solid fa-arrow-right-from-bracket' />Sair
+					</button>
 				</div> :
 				<div>
 					<Link to='/login' className='bg-blue-500 hover:bg-blue-600' onClick={close}>
