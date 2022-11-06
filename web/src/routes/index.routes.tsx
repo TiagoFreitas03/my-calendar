@@ -10,7 +10,6 @@ import { NotFound } from '../pages/NotFound'
 
 import { Register } from '../pages/user/Register'
 import { Login } from '../pages/user/Login'
-import { Logout } from '../pages/user/Logout'
 
 import { ChangePassword } from '../pages/user/ChangePassword'
 import { ForgotPassword } from '../pages/user/ForgotPassword'
@@ -50,7 +49,6 @@ export function Router() {
 						</Route>
 
 						<Route element={<PrivateRoutes signed={signed} />}>
-							<Route path='/logout' element={<Logout />} />
 							<Route path='/change_password' element={<ChangePassword />} />
 							<Route path='/create_event' element={<Event />} />
 							<Route path='/edit_event/:id' element={<Event />} />
