@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { format, sub, add } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
@@ -7,13 +6,11 @@ import { IconButton } from '../components/IconButton'
 import { SpecialDates } from '../components/SpecialDates'
 import { MonthEvents } from '../components/MonthEvents'
 
-import { isToday } from '../utils/dates'
-import { toNumber } from '../utils/convertions'
-import { COLORS } from '../theme'
 import { DatesController } from '../controllers/DatesController'
 import { Dates } from '../interfaces/Date'
+import { Calendar } from '../components/Calendar'
 
-const WEEK_DAYS = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB']
+type ChangeDateOperations = 'DY' | 'DM' | 'IY' | 'IM'
 
 export function Home() {
 	const [date, setDate] = useState(new Date())
@@ -22,87 +19,41 @@ export function Home() {
 	const month = date.getMonth()
 	const year = date.getFullYear()
 
-	const navigate = useNavigate()
+	useEffect(() => { getSpecialDates(month + 1, year) }, [])
 
-	useEffect(() => {
-		/** datas especiais */
-		new DatesController().listByReference({ month: month + 1, year }).then(dates => {
-			setSpecialDates(dates)
-		})
-	}, [month, year])
+	/**
+	 * busca as datas especiais por referência (mes e ano)
+	 * @param m mês
+	 * @param y ano
+	 */
+	async function getSpecialDates(m: number, y: number) {
+		const dates = await new DatesController().listByReference({ month: m, year: y })
+		setSpecialDates(dates)
+	}
+
+	/** trata a mudança de mês/ano */
+	async function handleChangeDate(operation: ChangeDateOperations) {
+		let newDate: Date
+
+		switch (operation) {
+			case 'DY': newDate = sub(date, { years: 1 }); break;
+			case 'DM': newDate = sub(date, { months: 1 }); break;
+			case 'IY': newDate = add(date, { years: 1 }); break;
+			case 'IM': newDate = add(date, { months: 1 }); break;
+		}
+
+		await getSpecialDates(newDate.getMonth() + 1, newDate.getFullYear())
+		setDate(newDate)
+	}
 
 	/** decrementa o ano em 1 */
-	const decrementYear = () => setDate(sub(date, { years: 1 }))
-
+	const decrementYear = () => handleChangeDate('DY')
 	/** incrementa o ano em 1 */
-	const incrementYear = () => setDate(add(date, { years: 1 }))
-
+	const incrementYear = () => handleChangeDate('IY')
 	/** decrementa o mês em 1 */
-	const decrementMonth = () => setDate(sub(date, { months: 1 }))
-
+	const decrementMonth = () => handleChangeDate('DM')
 	/** incrementa o mês em 1 */
-	const incrementMonth = () => setDate(add(date, { months: 1 }))
-
-	/**
-	 * altera a data selecionada
-	 * @param day número do dia selecionado
-	 */
-	const changeSelectedDate = (day: number) => {
-		if (day > 0) {
-			if (day === date.getDate())
-				return navigate(`/day_events/${format(date, 'yyyy-MM-dd')}`)
-
-			const newDate = new Date(year, month, day)
-			setDate(newDate)
-		}
-	}
-
-	/** dias do mês */
-	const monthDays = useMemo(() => {
-		const days: string[][] = [[]]
-
-		const firstDay = new Date(year, month, 1)
-		const lastDay = new Date(year, month + 1, 0).getDate()
-
-		while (days[0].length < firstDay.getDay())
-			days[0].push('')
-
-		for (let i = 1; i <= lastDay; i++) {
-			if (days[days.length - 1].length === 7)
-				days.push([])
-
-			days[days.length - 1].push(i.toString())
-		}
-
-		while (days[days.length - 1].length < 7)
-			days[days.length - 1 ].push('')
-
-		return days
-	}, [date])
-
-	/**
-	 * define a cor de fundo do dia dependendo das datas especiais
-	 * @param day dia
-	 * @returns cor de fundo do dia
-	 */
-	const getBackgroundColor = (day: number) => {
-		if (day === date.getDate())
-			return COLORS.YELLOW
-
-		if (isToday(day, month, year))
-			return COLORS.ORANGE
-
-		if (specialDates?.holidays.includes(day))
-			return COLORS.BLUE
-
-		if (specialDates?.celebrations.includes(day))
-			return COLORS.PURPLE
-
-		if (specialDates?.others.includes(day))
-			return COLORS.PINK
-
-		return '#09090A'
-	}
+	const incrementMonth = () => handleChangeDate('IM')
 
 	return (
 		<div className="flex gap-4 max-w-6xl w-full p-4 mx-auto">
@@ -124,38 +75,7 @@ export function Home() {
 				</header>
 
 				<table className='w-full mt-8 border-collapse text-lg text-center'>
-					<thead>
-						<tr>
-							{WEEK_DAYS.map((day) =>
-								<th className='bg-gray-700 border-2 border-gray-600 p-3' key={day}>{day}</th>
-							)}
-						</tr>
-					</thead>
-
-					<tbody>
-						{monthDays.map((week, i) => {
-							return (
-								<tr key={i}>
-									{week.map((day, j) => {
-										const num = toNumber(day, 0)
-
-										return (
-											<td
-												style={{
-													cursor: day !== '' ? 'pointer' : 'default',
-													background: getBackgroundColor(num),
-													color: num === date.getDate() ? '#09090A' : '#E1E1E6'
-												}}
-												className='border-2 border-gray-700 py-6 font-semibold'
-												key={j}
-												onClick={() => changeSelectedDate(num)}
-											>{day}</td>
-										)
-									})}
-								</tr>
-							)
-						})}
-					</tbody>
+					<Calendar date={date} specialDates={specialDates} onChangeDate={d => setDate(d)} />
 				</table>
 
 				<SpecialDates dates={specialDates?.dates ?? []} />
