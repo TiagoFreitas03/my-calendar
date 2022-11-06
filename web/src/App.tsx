@@ -1,7 +1,7 @@
 import { AuthContextProvider } from "./contexts/AuthContext"
 import { AlertContextProvider } from './contexts/AlertContext'
 
-import { Router } from "./routes/index.routes"
+import { Router } from "./Routes"
 
 /** componente principal da aplicação */
 export function App() {
