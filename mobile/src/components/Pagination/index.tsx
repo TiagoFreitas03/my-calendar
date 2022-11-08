@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import Icon from '@expo/vector-icons/Feather'
 
 import { PageButton } from './PageButton'
-import { COLORS, FONT_FAMILY, FONT_SIZE } from "../theme"
+import { COLORS, FONT_FAMILY, FONT_SIZE } from "../../theme"
 
 /** propriedades da paginação */
 interface PaginationProps {

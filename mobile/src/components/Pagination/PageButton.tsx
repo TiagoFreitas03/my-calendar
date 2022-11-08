@@ -1,13 +1,10 @@
-import { ReactNode } from 'react'
 import { Pressable } from 'react-native'
 
-import { COLORS } from '../theme'
+import { BaseProps } from '../../interfaces/BaseProps'
+import { COLORS } from '../../theme'
 
 /** propriedades do botão da paginação */
-interface PageButtonProps {
-	/** elementos filhos */
-	children: ReactNode
-
+interface PageButtonProps extends BaseProps {
 	/** cor de fundo do botão */
 	color?: string
 
