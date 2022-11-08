@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Alert } from "react-native"
+import { StyleSheet, View, Alert } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import type { DrawerScreenProps } from '@react-navigation/drawer'
 import { format } from 'date-fns'
 
-import { RootStackParamList } from '../../routes/index.routes'
-import { COLORS, FONT_FAMILY, FONT_SIZE } from "../../theme"
+import { StackParamList } from '../../stacks/StackParamList'
 import { EventsController } from '../../controllers/EventsController'
 import { Background } from "../../components/Background"
-import { Input } from "../../components/Input"
-import { MaskInput } from '../../components/MaskInput'
 import { Button } from '../../components/Button'
+import { Input } from "../../components/Form/Input"
+import { MaskInput } from '../../components/Form/MaskInput'
+import { Title } from '../../components/Text/Title'
 
 /** propriedades da tela de cadastro/edição de evento */
-type EventProps = DrawerScreenProps<RootStackParamList, 'update_event' | 'create_event'>
+type EventProps = DrawerScreenProps<StackParamList, 'update_event' | 'create_event'>
 
 /** mensagens de erro no cadastro/edição de evento */
 interface CreateEventError {
@@ -89,16 +89,26 @@ export function Event({ route }: EventProps) {
 	return (
 		<Background>
 			<View style={styles.container}>
-				<Text style={styles.title}>{ id ? 'Editar' : 'Novo' } Evento</Text>
+				<Title>{ id ? 'Editar' : 'Novo' } Evento</Title>
 
 				<Input label="Nome" value={name} error={error?.name} onChangeText={setName} />
 
-				<Input label='Descrição' value={description} onChangeText={setDescription} numberOfLines={4} />
+				<Input
+					label='Descrição'
+					value={description}
+					onChangeText={setDescription}
+					numberOfLines={4}
+				/>
 
 				<View style={styles.box}>
 					<MaskInput label='Início' mask='date' value={start} onType={value => setStart(value)} />
 
-					<MaskInput mask='time' value={startTime} onType={v => setStartTime(v)} error={error?.start} />
+					<MaskInput
+						mask='time'
+						value={startTime}
+						onType={v => setStartTime(v)}
+						error={error?.start}
+					/>
 				</View>
 
 				<View style={styles.box}>
@@ -120,18 +130,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	title: {
-		color: COLORS.GRAY_100,
-		fontFamily: FONT_FAMILY.BOLD,
-		fontSize: FONT_SIZE.LG
-	},
-
 	box: {
 		borderWidth: 2,
-		borderColor: COLORS.GRAY_500,
 		borderRadius: 8,
 		paddingHorizontal: 12,
 		paddingVertical: 8,
-		marginVertical: 12
+		marginVertical: 12,
+		borderColor: 'gray'
 	}
 })

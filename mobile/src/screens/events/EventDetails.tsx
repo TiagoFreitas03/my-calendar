@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, View } from 'react-native'
 import type { DrawerScreenProps } from '@react-navigation/drawer'
 import { useNavigation } from '@react-navigation/native'
 import Icon from '@expo/vector-icons/Feather'
 
-import { RootStackParamList } from '../../routes/index.routes'
-import { Background } from "../../components/Background"
+import { StackParamList } from '../../stacks/StackParamList'
 import { Event } from '../../interfaces/Event'
 import { EventsController } from '../../controllers/EventsController'
-import { COLORS, FONT_FAMILY, FONT_SIZE } from '../../theme'
+import { COLORS } from '../../theme'
+import { Background } from "../../components/Background"
 import { Row } from '../../components/Row'
+import { Title } from '../../components/Text/Title'
+import { P } from '../../components/Text/P'
 
 /** propriedades da tela de cadastro/edição de evento */
-type EventDetailsProps = DrawerScreenProps<RootStackParamList, 'event_details'>
+type EventDetailsProps = DrawerScreenProps<StackParamList, 'event_details'>
 
 /** tela de detalhe do evento */
 export function EventDetails({ route }: EventDetailsProps) {
@@ -46,13 +48,13 @@ export function EventDetails({ route }: EventDetailsProps) {
 				{
 					event ? (
 						<>
-							<Text style={styles.title}>{event.name}</Text>
+							<Title size={24}>{event.name}</Title>
 
-							{ event.description && <Text style={styles.text}>{event.description}</Text> }
+							{ event.description && <P mv={16}>{event.description}</P> }
 
-							<Text style={styles.text}>Início: {event.start}</Text>
+							<P mv={16}>Início: {event.start}</P>
 
-							{ event.end && <Text style={styles.text}>Fim: {event.end}</Text> }
+							{ event.end && <P mv={16}>Fim: {event.end}</P> }
 
 							<Row>
 								<Pressable
@@ -71,7 +73,7 @@ export function EventDetails({ route }: EventDetailsProps) {
 							</Row>
 						</>
 					) : (
-						<Text>Evento não encontrado.</Text>
+						<P>Evento não encontrado.</P>
 					)
 				}
 			</View>
@@ -82,19 +84,6 @@ export function EventDetails({ route }: EventDetailsProps) {
 const styles = StyleSheet.create({
 	container: {
 		padding: 20,
-	},
-
-	title: {
-		color: COLORS.GRAY_100,
-		fontSize: 24,
-		fontFamily: FONT_FAMILY.BOLD
-	},
-
-	text: {
-		color: COLORS.GRAY_100,
-		fontSize: FONT_SIZE.MD,
-		fontFamily: FONT_FAMILY.REGULAR,
-		marginVertical: 16
 	},
 
 	button: {
