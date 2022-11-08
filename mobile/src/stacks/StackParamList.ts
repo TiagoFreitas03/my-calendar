@@ -12,9 +12,6 @@ export type StackParamList = {
 	/** tela de cadastro de usuário */
 	register: undefined
 
-	/** tela de logout */
-	logout: undefined
-
 	/** tela de cadastro de evento */
 	create_event: undefined
 

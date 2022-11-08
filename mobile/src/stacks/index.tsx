@@ -9,7 +9,6 @@ import { Header } from '../components/Drawer/Header'
 import { Home } from '../screens/Home'
 import { Login } from '../screens/user/Login'
 import { Register } from '../screens/user/Register'
-import { Logout } from '../screens/user/Logout'
 import { Event } from '../screens/events/Event'
 import { NextEvents } from '../screens/events/NextEvents'
 import { EventDetails } from '../screens/events/EventDetails'
@@ -41,8 +40,6 @@ export function AppStack() {
 							<Screen name='create_event' component={Event} />
 
 							<Screen name='next_events' component={NextEvents} />
-
-							<Screen name='logout' component={Logout} />
 
 							<Screen name='update_event' component={Event} />
 

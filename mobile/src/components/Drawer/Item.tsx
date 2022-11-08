@@ -4,6 +4,7 @@ import Icon from '@expo/vector-icons/Feather'
 
 import { Row } from "../Row"
 import { COLORS, FONT_FAMILY, FONT_SIZE } from '../../theme'
+import { useAuth } from "../../contexts/AuthContext"
 
 /** nomes das telas para se navegar */
 type Screens = 'home' | 'login' | 'register' | 'create_event' | 'next_events' | 'logout'
@@ -20,11 +21,21 @@ interface ItemProps {
 
 /** item do menu lateral */
 export function Item({ title, icon, screen }: ItemProps) {
+	const { signOut } = useAuth()
+
 	const navigation = useNavigation()
 
 	return (
 		<Pressable
-			onPress={() => navigation.navigate(screen)}
+			onPress={async() => {
+				if (screen === 'logout') {
+					await signOut()
+					navigation.navigate('home')
+					return
+				}
+
+				navigation.navigate(screen)
+			}}
 			style={{
 				borderWidth: 1,
 				borderColor: COLORS.GRAY_100,
