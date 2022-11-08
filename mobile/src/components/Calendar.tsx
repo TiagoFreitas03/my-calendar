@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, StyleSheet, Pressable } from 'react-native'
 
+import { P } from './Text/P'
 import { Row } from './Row'
 import { SpecialDates } from '../interfaces/SpecialDate'
-import { COLORS, FONT_FAMILY, FONT_SIZE } from '../theme'
+import { COLORS } from '../theme'
 import { isToday, toNumber } from '../utils'
 
 /** dias da semana */
@@ -19,6 +20,7 @@ interface CalendarProps {
 	onChangeDate: (newDate: Date) => void
 }
 
+/** componente calendário */
 export function Calendar({ date, specialDates, onChangeDate }: CalendarProps) {
 	const month = date.getMonth()
 	const year = date.getFullYear()
@@ -84,7 +86,9 @@ export function Calendar({ date, specialDates, onChangeDate }: CalendarProps) {
 		<View style={{ alignItems: 'center', marginTop: 12 }}>
 			<Row>
 				{ WEEK_DAYS.map(day => (
-					<Text style={[styles.th, styles.cell, styles.text]} key={day}>{day}</Text>
+					<View style={[styles.th, styles.cell]} key={day}>
+						<P centered>{day}</P>
+					</View>
 				))}
 			</Row>
 
@@ -105,10 +109,9 @@ export function Calendar({ date, specialDates, onChangeDate }: CalendarProps) {
 								}
 								key={j}
 							>
-								<Text style={[
-									styles.text,
-									{ color: COLORS[num === date.getDate() ? 'GRAY_900' : 'GRAY_100'] }
-								]}>{ day }</Text>
+								<P color={COLORS[`GRAY_${num === date.getDate() ? '900' : '100'}`]} centered>
+									{ day }
+								</P>
 							</Pressable>
 						)
 					}) }
@@ -133,12 +136,5 @@ const styles = StyleSheet.create({
 	td: {
 		borderColor: COLORS.GRAY_700,
 		paddingVertical: 16,
-	},
-
-	text: {
-		fontFamily: FONT_FAMILY.REGULAR,
-		fontSize: FONT_SIZE.SM,
-		color: COLORS.GRAY_100,
-		textAlign: 'center'
 	}
 })
