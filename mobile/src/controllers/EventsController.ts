@@ -1,5 +1,8 @@
+import { format } from 'date-fns'
+
 import { api } from '../services/api'
 import { Event } from '../interfaces/Event'
+import { toDate } from '../utils'
 
 /** dados para cadastro/atualização de evento */
 interface EventData {
@@ -77,9 +80,13 @@ export class EventsController {
 	 * @param id id do evento
 	 */
 	async findById(id: string) {
-		const res = await api.get(`event/${id}`)
+		const { data } = await api.get(`event/${id}`)
 
-		return res.data as Event
+		return {
+			...data,
+			startDate: format(toDate(data.startDate), 'dd/MM/yyyy'),
+			endDate: data.endDate ? format(toDate(data.endDate), 'dd/MM/yyyy') : undefined,
+		} as Event
 	}
 
 	/**
