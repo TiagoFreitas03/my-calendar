@@ -2,24 +2,22 @@ import { Dimensions, StyleSheet, TouchableOpacity, View, Image } from 'react-nat
 import Icon from '@expo/vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker'
 
-import { COLORS, FONT_FAMILY, FONT_SIZE } from '../theme'
+import { COLORS, FONT_FAMILY, FONT_SIZE } from '../../theme'
 import { Label } from './Label'
 
 /** propriedades do input de arquivo */
 interface ImageInputProps {
 	/** título do input */
 	label?: string
-
 	/** nome do arquivo selecionado */
 	filename: string
-
 	/** evento de seleção da imagem */
 	onSelect: (image: string) => void
-
 	/** evento de "limpeza" da imagem selecionada */
 	onClear: () => void
 }
 
+/** input de imagem */
 export function ImageInput({ label, filename, onSelect, onClear }: ImageInputProps) {
 	async function handleSelectImage() {
 		const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -43,7 +41,11 @@ export function ImageInput({ label, filename, onSelect, onClear }: ImageInputPro
 
 			{
 				filename === '' ? (
-					<TouchableOpacity style={styles.imageInput} onPress={handleSelectImage} activeOpacity={0.75}>
+					<TouchableOpacity
+						style={styles.imageInput}
+						onPress={handleSelectImage}
+						activeOpacity={0.75}
+					>
 						<Icon name='plus' size={32} color={COLORS.BLUE_500} />
 					</TouchableOpacity>
 				) :

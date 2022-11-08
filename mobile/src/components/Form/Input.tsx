@@ -1,13 +1,12 @@
 import { TextInputProps, View, TextInput, Text, StyleSheet, Dimensions } from "react-native"
 
 import { Label } from './Label'
-import { COLORS, FONT_FAMILY, FONT_SIZE } from "../theme"
+import { COLORS, FONT_FAMILY, FONT_SIZE } from "../../theme"
 
 /** propriedades do input */
 export interface InputProps extends TextInputProps {
 	/** título do input */
 	label?: string
-
 	/** mensagem do erro de validação */
 	error?: string
 }
