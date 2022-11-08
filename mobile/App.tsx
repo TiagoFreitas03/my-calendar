@@ -5,7 +5,7 @@ import { useFonts as useNunito, Nunito_700Bold } from '@expo-google-fonts/nunito
 import { useFonts as useRoboto, Roboto_400Regular } from '@expo-google-fonts/roboto'
 
 import { AuthContextProvider } from './src/contexts/AuthContext'
-import { Routes } from './src/routes/index.routes'
+import { AppStack } from './src/stacks'
 import { Loading } from './src/screens/Loading'
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
 
 	return (
 		<AuthContextProvider>
-			<Routes />
+			<AppStack />
 
 			<StatusBar />
 		</AuthContextProvider>
