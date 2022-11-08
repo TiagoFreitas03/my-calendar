@@ -9,10 +9,12 @@ interface ParagraphProps extends BaseProps {
 	centered?: boolean
 	/** cor do texto */
 	color?: string
+	/** margem vertical do texto */
+	mv?: number
 }
 
 /** parágrafo (texto com estilo padrão) */
-export function P({ children, centered, color = COLORS.GRAY_100 }: ParagraphProps) {
+export function P({ children, centered, color = COLORS.GRAY_100, mv = 0 }: ParagraphProps) {
 	return (
 		<Text
 			style={{
@@ -20,6 +22,7 @@ export function P({ children, centered, color = COLORS.GRAY_100 }: ParagraphProp
 				fontSize: FONT_SIZE.SM,
 				fontFamily: FONT_FAMILY.REGULAR,
 				textAlign: centered ? 'center' : 'left',
+				marginVertical: mv
 			}}
 		>
 			{ children }
