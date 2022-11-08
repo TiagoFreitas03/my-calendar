@@ -1,14 +1,9 @@
-import { ReactNode } from 'react'
 import { StyleSheet, View } from "react-native"
 
-/** propriedades da linha */
-interface RowProps {
-	/** elementos filhos */
-	children: ReactNode
-}
+import { BaseProps } from "../interfaces/BaseProps"
 
 /** linha */
-export function Row({ children }: RowProps) {
+export function Row({ children }: BaseProps) {
 	return (
 		<View style={styles.container}>
 			{children}

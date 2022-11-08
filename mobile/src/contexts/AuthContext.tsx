@@ -1,13 +1,8 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
 
 import { api } from '../services/api'
-
-/** propriedades do contexto */
-interface ContextProps {
-	/** elementos filhos */
-	children: ReactNode
-}
+import { BaseProps } from '../interfaces/BaseProps'
 
 /** dados do contexto de autenticação */
 interface AuthContextData {
@@ -27,7 +22,7 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 /** provedor do contexto de autenticação */
-export function AuthContextProvider({ children }: ContextProps) {
+export function AuthContextProvider({ children }: BaseProps) {
 	const [token, setToken] = useState('')
 	const [loading, setLoading] = useState(true)
 

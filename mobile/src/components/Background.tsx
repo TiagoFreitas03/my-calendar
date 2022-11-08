@@ -1,15 +1,12 @@
-import { ReactNode } from 'react'
 import { Dimensions, ScrollView, StyleSheet } from "react-native"
 
+import { BaseProps } from '../interfaces/BaseProps'
 import { COLORS } from '../theme'
 
 /** propriedades do fundo */
-interface BackgroundProps {
+interface BackgroundProps extends BaseProps {
 	/** indica se o conteúdo será centralizado */
 	center?: boolean
-
-	/** elementos filhos */
-	children: ReactNode
 }
 
 /** fundo das telas */
