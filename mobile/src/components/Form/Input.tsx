@@ -27,7 +27,10 @@ export function Input({ label, error, ...rest }: InputProps) {
 			<TextInput
 				{...rest}
 				selectionColor={COLORS.GRAY_300}
-				style={styles.input}
+				style={[
+					styles.input,
+					{ textAlignVertical: rest.numberOfLines ? 'top' : 'center' }
+				]}
 				multiline={(rest.numberOfLines && rest.numberOfLines > 1) ? true : false}
 			/>
 		</View>
