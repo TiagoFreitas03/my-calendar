@@ -1,22 +1,23 @@
-import { StyleSheet, View, Image, Text, Pressable } from 'react-native'
+import { View, StyleSheet, Image, Pressable } from 'react-native'
 import { DrawerHeaderProps } from '@react-navigation/drawer'
-import Icon from '@expo/vector-icons/Ionicons'
+import Icon from '@expo/vector-icons/FontAwesome5'
 
-import { logo } from '../assets'
-import { COLORS, FONT_FAMILY, FONT_SIZE } from '../theme'
+import { logo } from '../../assets'
+import { COLORS } from '../../theme'
+import { Title } from '../Text/Title'
 
-/** cabeçalho da aplicação */
+/** cabeçalho do drawer */
 export function Header({ navigation }: DrawerHeaderProps) {
 	return (
 		<View style={styles.container}>
 			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 				<Image source={logo} style={styles.image} />
 
-				<Text style={styles.title}>MyCalendar</Text>
+				<Title>MyCalendar</Title>
 			</View>
 
 			<Pressable onPress={() => navigation.openDrawer()}>
-				<Icon name='menu' size={30} color={COLORS.GRAY_100} />
+				<Icon name='bars' size={30} color={COLORS.GRAY_100} />
 			</Pressable>
 		</View>
 	)
@@ -35,13 +36,7 @@ const styles = StyleSheet.create({
 
 	image: {
 		width: 40,
-		height: 31.5
-	},
-
-	title: {
-		color: COLORS.GRAY_100,
-		fontSize: FONT_SIZE.LG,
-		marginLeft: 12,
-		fontFamily: FONT_FAMILY.BOLD
+		height: 31.5,
+		marginRight: 12
 	}
 })
