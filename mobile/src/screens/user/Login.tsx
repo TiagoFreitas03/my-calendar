@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Text, StyleSheet, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { Input } from '../../components/Input'
+import { Input } from '../../components/Form/Input'
 import { Button } from '../../components/Button'
 import { Background } from '../../components/Background'
 import { COLORS, FONT_FAMILY } from '../../theme'
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		//height: Dimensions.get('window').height
 	},
 
 	text: {

@@ -3,7 +3,7 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 
 import { Background } from "../../components/Background"
-import { Input } from "../../components/Input"
+import { Input } from "../../components/Form/Input"
 import { Pagination } from "../../components/Pagination"
 import { EventsController } from "../../controllers/EventsController"
 import { Event } from "../../interfaces/Event"

@@ -5,9 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 import { COLORS, FONT_FAMILY } from '../../theme'
 import { Background } from '../../components/Background'
 import { Button } from '../../components/Button'
-import { Input } from '../../components/Input'
-import { ImageInput } from '../../components/ImageInput'
-import { MaskInput } from '../../components/MaskInput'
+import { Input } from '../../components/Form/Input'
+import { ImageInput } from '../../components/Form/ImageInput'
+import { MaskInput } from '../../components/Form/MaskInput'
 import { UsersController } from '../../controllers/UsersController'
 
 /** erros dos campos de cadastro de usuário */
